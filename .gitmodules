@@ -1,0 +1,21 @@
+[submodule "templates/oh-my-zsh"]
+	path = templates/oh-my-zsh
+	url = git@github.com:johnramsden/oh-my-zsh.git
+[submodule "templates/ssh"]
+	path = templates/ssh
+	url = git@github.com:johnramsden/ssh.git
+[submodule "templates/scripts"]
+	path = templates/scripts
+	url = git@github.com:johnramsden/scripts.git
+[submodule "templates/conky"]
+	path = templates/conky
+	url = git@github.com:johnramsden/conky.git
+[submodule "templates/git"]
+	path = templates/git
+	url = git@github.com:johnramsden/git.git
+[submodule "templates/services"]
+	path = templates/services
+	url = git@github.com:johnramsden/services.git
+[submodule "templates/gnupg"]
+	path = templates/gnupg
+	url = git@github.com:johnramsden/gnupg.git
