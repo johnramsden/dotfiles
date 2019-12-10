@@ -1,0 +1,14 @@
+## General ##
+
+user_name: "john"
+templates_dir: "templates"
+
+## git ##
+
+git_name: "John Ramsden"
+git_email: "johnramsden@riseup.net"
+git_config_dir: ".config/git"
+git_hooksPath: "{{ git_config_dir }}/hooks"
+#git_signingKey: ""
+
+## zsh ##
