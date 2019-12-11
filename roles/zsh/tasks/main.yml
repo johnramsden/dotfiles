@@ -1,35 +1,11 @@
+---
+
 ## zsh role ##
 
-# Depth=1 for https://github.com/ohmyzsh/ohmyzsh/issues/4963
-- name: Clone oh-my-zsh
-  git:
-    repo: 'git://github.com/robbyrussell/oh-my-zsh.git'
-    dest: "~{{user_name}}/.local/share/oh-my-zsh"
-    depth: 1
-    force: true
-    accept_hostkey: true
-    
-- name: Ensure directory structure exists
-  file:
-    path: '~{{user_name}}/{{ item.path }}'
-    state: directory
-    owner: "{{user_name}}"
-    group: "{{user_name}}"
-    mode: a-x,u=rwX,g=rwX,o=rX
-  with_filetree: '{{ templates_source }}/oh-my-zsh'
-  when:
-    - item.state == 'directory'
-    - item.path != '.git'
+- import_tasks: zsh-config.yml
+  tags:
+    - zsh:config
 
-- name: Ensure files are populated from templates
-  template:
-    src: '{{ item.src }}'
-    dest: '~{{ user_name }}/{{ item.path | regex_replace("\.j2", "") }}'
-    owner: "{{ user_name }}"
-    group: "{{ user_name }}"
-    mode: u=rw,g=r,o=r
-  with_filetree: '{{ templates_source }}/oh-my-zsh'
-  when:
-    - item.state == 'file'
-    - item.path != '.git'
-    
+- import_tasks: zsh-dependencies.yml
+  tags:
+    - zsh:dependencies

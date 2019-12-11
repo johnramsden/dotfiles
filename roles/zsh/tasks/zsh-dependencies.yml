@@ -1,0 +1,18 @@
+---
+
+# Depth=1 for https://github.com/ohmyzsh/ohmyzsh/issues/4963
+- name: Clone oh-my-zsh
+  git:
+    repo: 'git://github.com/robbyrussell/oh-my-zsh.git'
+    dest: "~{{user_name}}/{{ zsh_install_dir }}"
+    depth: 1
+    force: true
+    accept_hostkey: true
+
+- name: Clone plugins
+  git:
+    repo: "{{ item.repo }}"
+    dest: "~{{ user_name }}/{{ zsh_custom_dir }}/plugins/{{ item.dest }}"
+    force: true
+    accept_hostkey: true
+  loop: "{{ zsh_plugins }}"
