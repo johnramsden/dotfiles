@@ -1,0 +1,26 @@
+## git role ##
+
+- name: Ensure configs are populated from templates
+  template:
+    src: '{{ item.src }}'
+    dest: '~{{ user_name }}/{{ item.path | regex_replace("\.j2", "") }}'
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: u=rw,g=r,o=r
+  with_filetree: '{{ templates_source }}/ssh'
+  when:
+    - item.state == 'file'
+    - item.path != '.git'
+
+- name: Ensure wanted SSH directories exist
+  file:
+    state: directory
+    dest: '~{{ user_name }}/.ssh/{{ item.dir }}'
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - dir: sockets
+      mode: u=rwx,g=rx,o=rx
+    - dir: keys
+      mode: a-rwx,u=rwx
