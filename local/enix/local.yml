@@ -1,0 +1,7 @@
+## Ansible ##
+
+ansible_become_pass: '{{ vault.ansible.ansible_become_pass }}'
+
+## git ##
+
+git_signingKey: "030119B9BE61578E661BE8FDDCEA6E4831957CB3"

@@ -1,6 +1,10 @@
 - name: Setup local configuration
   hosts: local
 
+  vars_files:
+    - "local/{{ ansible_facts['nodename'] }}/local.yml"
+    - "local/{{ ansible_facts['nodename'] }}/vault.yml"
+
   roles:
     - git
     - zsh
