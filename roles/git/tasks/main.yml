@@ -7,8 +7,10 @@
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
     mode: u=rw,g=r,o=r
-  with_filetree: '{{ templates_dir }}/git'
-  when: item.state == 'file'
+  with_filetree: '{{ templates_source }}/git'
+  when:
+    - item.state == 'file'
+    - item.path != '.git'
 
 - name: Ensure hooks path exists
   file:
