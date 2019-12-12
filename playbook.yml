@@ -1,3 +1,5 @@
+---
+    
 - name: Setup local configuration
   hosts: local
 
@@ -6,10 +8,17 @@
     - "local/{{ ansible_facts['nodename'] }}/vault.yml"
 
   roles:
-    - git
-    - zsh
-    - ssh
-    - services
-    - scripts
-    - gnupg
-    - conky
+    - role: git
+      when: roles_enabled.git is defined and roles_enabled.git
+    - role: zsh
+      when: roles_enabled.zsh is defined and roles_enabled.zsh
+    - role: ssh
+      when: roles_enabled.ssh is defined and roles_enabled.ssh
+    - role: services
+      when: roles_enabled.services is defined and roles_enabled.services
+    - role: scripts
+      when: roles_enabled.scripts is defined and roles_enabled.scripts
+    - role: gnupg
+      when: roles_enabled.gnupg is defined and roles_enabled.gnupg
+    - role: conky
+      when: roles_enabled.conky is defined and roles_enabled.conky
