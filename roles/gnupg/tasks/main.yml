@@ -1,0 +1,26 @@
+---
+    
+## gnupg role ##
+
+- name: Ensure directory structure exists
+  file:
+    path: '~{{ user_name }}/{{ item.path }}'
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: a-rwx,u=rwx
+  with_filetree: '{{ templates_source }}/gnupg'
+  when:
+    - item.state == 'directory'
+    - item.path != '.git'
+
+- name: Ensure files are populated from templates
+  copy:
+    src: '{{ item.src }}'
+    dest: '~{{ user_name }}/{{ item.path }}'
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    mode: u=rw,g=r,o=r
+  with_filetree: '{{ templates_source }}/gnupg'
+  when:
+    - item.state == 'file'
+    - item.path != '.git'
