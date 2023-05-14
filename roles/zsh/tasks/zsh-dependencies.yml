@@ -3,7 +3,7 @@
 # Depth=1 for https://github.com/ohmyzsh/ohmyzsh/issues/4963
 - name: Clone oh-my-zsh
   git:
-    repo: 'git://github.com/robbyrussell/oh-my-zsh.git'
+    repo: 'https://github.com/ohmyzsh/ohmyzsh.git'
     dest: "~{{user_name}}/{{ zsh_install_dir }}"
     depth: 1
     force: true

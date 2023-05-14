@@ -28,7 +28,7 @@
 
 - name: Clone git-good-commit hook
   git:
-    repo: 'git@github.com:tommarshall/git-good-commit.git'
+    repo: 'https://github.com/tommarshall/git-good-commit.git'
     dest: "~{{user_name}}/{{ git_config_dir }}/templates/available/hooks/git-good-commit"
     force: true
     accept_hostkey: true

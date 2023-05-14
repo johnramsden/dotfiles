@@ -21,9 +21,7 @@ zsh_install_dir: ".local/share/oh-my-zsh"
 zsh_custom_dir: ".config/oh-my-zsh/custom"
 
 zsh_plugins:
-  - repo: 'git@github.com:zsh-users/zsh-autosuggestions.git'
+  - repo: 'https://github.com/zsh-users/zsh-autosuggestions.git'
     dest: "zsh-autosuggestions"
-  - repo: 'git@github.com:MichaelAquilina/zsh-you-should-use'
+  - repo: 'https://github.com/MichaelAquilina/zsh-you-should-use.git'
     dest: "you-should-use"
-  - repo: 'git@github.com:johnramsden/zsh-zsnapac'
-    dest: "zsnapac"

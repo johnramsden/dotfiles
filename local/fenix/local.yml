@@ -13,7 +13,7 @@ roles_enabled:
 
 ## git ##
 
-git_signingKey: "12F586C67B732441C57144CD2E989DFAD8B09FD0"
+git_signingKey: "GIT_SIGNING_KEY"
 
 ## conky ##
 
