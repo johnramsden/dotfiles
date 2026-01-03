@@ -1,5 +1,5 @@
 ---
-    
+
 ## gnupg role ##
 
 - name: Ensure directory structure exists
@@ -8,6 +8,8 @@
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
     mode: a-rwx,u=rwx
+    state: directory
+    recurse: yes
   with_filetree: '{{ templates_source }}/gnupg'
   when:
     - item.state == 'directory'

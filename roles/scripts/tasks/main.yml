@@ -1,5 +1,5 @@
 ---
-    
+
 ## scripts role ##
 
 - name: Ensure directory structure exists
@@ -7,6 +7,8 @@
     path: '~{{ user_name }}/{{ item.path }}'
     owner: "{{ user_name }}"
     group: "{{ user_name }}"
+    state: directory
+    # recurse: yes
     mode: u=rwx,g=rx,o=rx
   with_filetree: '{{ templates_source }}/scripts'
   when:

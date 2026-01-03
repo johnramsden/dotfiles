@@ -3,22 +3,44 @@
 - name: Setup local configuration
   hosts: local
 
-  vars_files:
-    - "local/{{ ansible_facts['nodename'] }}/local.yml"
-    - "local/{{ ansible_facts['nodename'] }}/vault.yml"
+  tasks:
+    - name: Include host-specific vault
+      include_vars: "local/{{ ansible_facts['nodename'] }}/vault.yml"
 
-  roles:
-    - role: git
+    - name: Include host-specific variables
+      include_vars: "local/{{ ansible_facts['nodename'] }}/local.yml"
+
+    - name: Run git role
+      include_role:
+        name: git
       when: roles_enabled.git is defined and roles_enabled.git
-    - role: zsh
+
+    - name: Run zsh role
+      include_role:
+        name: zsh
       when: roles_enabled.zsh is defined and roles_enabled.zsh
-    - role: ssh
+
+    - name: Run ssh role
+      include_role:
+        name: ssh
       when: roles_enabled.ssh is defined and roles_enabled.ssh
-    - role: services
+
+    - name: Run services role
+      include_role:
+        name: services
       when: roles_enabled.services is defined and roles_enabled.services
-    - role: scripts
+
+    - name: Run scripts role
+      include_role:
+        name: scripts
       when: roles_enabled.scripts is defined and roles_enabled.scripts
-    - role: gnupg
+
+    - name: Run gnupg role
+      include_role:
+        name: gnupg
       when: roles_enabled.gnupg is defined and roles_enabled.gnupg
-    - role: conky
+
+    - name: Run conky role
+      include_role:
+        name: conky
       when: roles_enabled.conky is defined and roles_enabled.conky

@@ -40,6 +40,13 @@
     group: "{{ user_name }}"
     mode: u=rwx,g=rx,o=rx
 
+- name: Ensure hook git hook directory exists
+  file:
+    path: '~{{user_name}}/{{ git_config_dir }}/hooks'
+    owner: "{{ user_name }}"
+    group: "{{ user_name }}"
+    state: directory
+
 - name: Ensure hook git-good-commit hook symlinked
   file:
     src: '~{{user_name}}/{{ git_config_dir }}/templates/available/hooks/git-good-commit/hook.sh'
