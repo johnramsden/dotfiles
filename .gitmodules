@@ -7,9 +7,6 @@
 [submodule "templates/scripts"]
 	path = templates/scripts
 	url = git@github.com:johnramsden/scripts.git
-[submodule "templates/conky"]
-	path = templates/conky
-	url = git@github.com:johnramsden/conky.git
 [submodule "templates/git"]
 	path = templates/git
 	url = git@github.com:johnramsden/git.git
