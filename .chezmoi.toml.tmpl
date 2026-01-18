@@ -7,11 +7,11 @@
 {{- /* Git config - different for can */ -}}
 {{- $gitEmail := "johnramsden@riseup.net" -}}
 {{- $gitSigningKey := "~/.ssh/id_ed25519.pub" -}}
-{{- $gitSshKey := "~/.ssh/git_ed25519.pub" -}}
+{{- $gitSshKey := "id_ed25519" -}}
 {{- if $isCan -}}
 {{-   $gitEmail = "john.ramsden@canonical.com" -}}
 {{-   $gitSigningKey = "~/.ssh/id_rsa.pub" -}}
-{{-   $gitSshKey := "~/.ssh/id_ed25519.pub" -}}
+{{-   $gitSshKey = "id_rsa" -}}
 {{- end -}}
 
 [data]
