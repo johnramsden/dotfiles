@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+CONF="/efi/loader/loader.conf"
+ENTRIES_DIR="/efi/loader/entries"
+BACKUP="${CONF}.bak"
+
+usage() {
+  echo "Usage: $0 <entry-name-without-.conf>"
+  echo "Example: $0 Ubuntu"
+  echo "Example: $0 org.zectl-default"
+}
+
+if [[ $# -ne 1 ]]; then
+  usage
+  exit 2
+fi
+
+name="$1"
+entry="${name}.conf"
+entry_path="${ENTRIES_DIR}/${entry}"
+
+# Basic validation
+if [[ ! "$name" =~ ^[A-Za-z0-9._-]+$ ]]; then
+  echo "Error: entry name contains invalid characters (allowed: A-Za-z0-9 . _ -)"
+  exit 2
+fi
+
+if [[ ! -f "$CONF" ]]; then
+  echo "Error: loader.conf not found: $CONF"
+  exit 1
+fi
+
+if [[ ! -f "$entry_path" ]]; then
+  echo "Error: entry does not exist: $entry_path"
+  echo "No changes made."
+  exit 1
+fi
+
+tmp="$(mktemp)"
+
+# Update only the 'default' line; if absent, prepend it
+if grep -Eq '^[[:space:]]*default[[:space:]]+' "$CONF"; then
+  awk -v newdef="$entry" '
+    /^[[:space:]]*default[[:space:]]+/ {
+      print "default  " newdef
+      next
+    }
+    { print }
+  ' "$CONF" > "$tmp"
+else
+  {
+    echo "default  $entry"
+    cat "$CONF"
+  } > "$tmp"
+fi
+
+# Backup + replace
+cp -a -- "$CONF" "$BACKUP"
+install -m 0644 -- "$tmp" "$CONF"
+rm -f -- "$tmp"
+
+echo "Switched default to: $entry"
+echo "Backup saved as: $BACKUP"
+echo
+echo "=== $CONF ==="
+cat -- "$CONF"

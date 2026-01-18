@@ -51,6 +51,8 @@ PATH="$HOME/.cargo/bin:$PATH"
 
 ## --------------------- MISC ---------------------- ##
 
+export SSH_AUTH_SOCK="${XDG_RUNTIME_DIR}/ssh-agent.socket"
+
 export GPG_TTY=$(tty)
 export EDITOR='nano'
 # Use KDE's kioclient for electron's trash.
