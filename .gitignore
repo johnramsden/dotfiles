@@ -1,4 +1,0 @@
-*.retry
-/host_vars/localhost
-/secrets
-/.vscode

@@ -1,0 +1,33 @@
+{{- $hostname := .chezmoi.hostname -}}
+{{- $isArch := eq .chezmoi.osRelease.id "arch" -}}
+{{- $isUbuntu := or (eq .chezmoi.osRelease.id "ubuntu") (eq .chezmoi.osRelease.id "debian") -}}
+{{- $hasSystemd := or (eq $hostname "fenix") (eq $hostname "wooly") (eq $hostname "enix") -}}
+{{- $isCan := eq $hostname "can" -}}
+
+{{- /* Git config - different for can */ -}}
+{{- $gitEmail := "johnramsden@riseup.net" -}}
+{{- $gitSigningKey := "~/.ssh/id_ed25519.pub" -}}
+{{- if $isCan -}}
+{{-   $gitEmail = "john.ramsden@canonical.com" -}}
+{{-   $gitSigningKey = "~/.ssh/id_rsa.pub" -}}
+{{- end -}}
+
+[data]
+    hostname = {{ $hostname | quote }}
+    isArch = {{ $isArch }}
+    isUbuntu = {{ $isUbuntu }}
+    hasSystemd = {{ $hasSystemd }}
+    isCan = {{ $isCan }}
+
+    [data.git]
+        name = "John Ramsden"
+        email = {{ $gitEmail | quote }}
+        signingKey = {{ $gitSigningKey | quote }}
+        hooksPath = ".config/git/hooks"
+
+[edit]
+    command = "nano"
+
+[git]
+    autoCommit = false
+    autoPush = false

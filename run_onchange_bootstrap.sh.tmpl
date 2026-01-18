@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Hash of setup.yml - changing this triggers re-run
+# {{ include "dot_bootstrap/setup.yml" | sha256sum }}
+
+echo "=== Running Ansible Bootstrap ==="
+
+if ! command -v ansible-playbook &> /dev/null; then
+    echo "ERROR: ansible-playbook not found. Run install script first."
+    exit 1
+fi
+
+PLAYBOOK="{{ joinPath .chezmoi.sourceDir "dot_bootstrap/setup.yml" }}"
+
+echo "Running playbook: $PLAYBOOK"
+echo ""
+
+ansible-playbook "$PLAYBOOK" --ask-become-pass
+
+echo ""
+echo "✓ Ansible bootstrap complete"

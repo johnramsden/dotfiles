@@ -1,0 +1,11 @@
+[Unit]
+Description=Update flatpaks
+Wants=network.target
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/flatpak update --assumeyes --verbose
+
+[Install]
+WantedBy=default.target

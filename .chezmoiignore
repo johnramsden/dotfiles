@@ -1,0 +1,9 @@
+# Skip systemd services and PAM on can (Ubuntu)
+{{ if .isCan }}
+.config/systemd/
+.pam_environment
+{{ end }}
+
+# Don't deploy these to home
+README.md
+bootstrap.sh

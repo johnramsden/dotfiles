@@ -1,0 +1,217 @@
+# ssh configuration file
+# John Ramsden
+
+######### Hosts ########
+
+## External Hosts ##
+
+Host *github.com
+  User git
+  HostName github.com
+  IdentityFile ~/.ssh/git_ed25519
+  PreferredAuthentications publickey
+
+Host aur.archlinux.org
+  IdentityFile ~/.ssh/keys/aur_rsa
+  User johnramsden
+
+### UBC
+
+Host howesound
+  HostName howesound.ece.ubc.ca
+  ForwardX11 yes
+  ProxyJump ssh.ece.ubc.ca
+  User john
+  ForwardAgent yes
+
+Host cortes
+  HostName cortes.ece.ubc.ca
+  ForwardX11 yes
+  ProxyJump ssh.ece.ubc.ca
+  User john
+  ForwardAgent yes
+
+Host savary
+  HostName savary.ece.ubc.ca
+  ProxyJump ssh.ece.ubc.ca
+  ForwardX11 yes
+  User john
+  ForwardAgent yes
+
+Host hinton
+  HostName hinton.cs.ubc.ca
+  ForwardX11 yes
+  ProxyJump ssh.ece.ubc.ca
+  User johnramsden
+  ForwardAgent yes
+
+Host howesound
+  HostName howesound.ece.ubc.ca
+  ForwardX11 yes
+  ProxyJump ssh.ece.ubc.ca
+  User john
+  ForwardAgent yes
+
+Host ssh.ece.ubc.ca ssh-linux.ece.ubc.ca
+   ForwardAgent yes
+   User john
+   ForwardX11 yes
+
+## Jump Hosts ##
+
+# Jump host pfsense, remotely accessable
+Host jump.pfsense
+  HostName pfsense.ramsden.network
+  Port 1922
+
+Host alarmpi.jump.pfsense
+   HostName 172.20.30.4
+   ProxyJump jump.pfsense
+
+Host lilan.jump.pfsense
+  HostName lilan.ramsden.network
+  ProxyJump jump.pfsense
+
+Host wrath.jump.pfsense
+  HostName wrath.ramsden.network
+  ProxyJump jump.pfsense
+
+## Internal Hosts ##
+
+# Computers
+
+Host wooly
+  HostName wooly.ramsden.network
+Host wifi.wooly
+  HostName wifi-wooly.ramsden.network
+Host enix
+  HostName enix.ramsden.network
+Host fenix
+  HostName fenix.ramsden.network
+
+# Servers
+
+Host lilan
+  HostName lilan.ramsden.network
+
+## SKVARE / US Chess ##
+
+Host *.skvare.com *-gambit.uschess.org dev-www1.uschess.org dev-secure2.uschess.org
+  AddressFamily inet
+  ForwardAgent yes
+  Port 27271
+  ControlMaster no
+  ControlPath none
+  IdentityFile ~/.ssh/skvare_ed25519
+
+Host gambit
+  User skvare-mark
+  Port 2322
+  HostName 10.3.1.203
+  ControlMaster no
+  ControlPath none
+  ForwardAgent yes
+
+Host staging-www1.uschess.org
+  ControlMaster no
+  ControlPath none
+  ForwardAgent yes
+  IdentityFile ~/.ssh/skvare_ed25519
+
+Host staging-secure2.uschess.org
+  ControlMaster no
+  ControlPath none
+  ForwardAgent yes
+  IdentityFile ~/.ssh/skvare_ed25519
+
+Host www1
+  User ec2-user
+  HostName ec2-54-184-217-241.us-west-2.compute.amazonaws.com
+  ControlMaster no
+  ControlPath none
+  ForwardAgent yes
+  IdentityFile ~/.ssh/skvare_ed25519
+
+Host secure2
+  User ec2-user
+  HostName ec2-54-202-41-121.us-west-2.compute.amazonaws.com
+  ControlMaster no
+  ControlPath none
+  ForwardAgent yes
+  IdentityFile ~/.ssh/skvare_ed25519
+
+Host iris-stage.calyx.org iris-stage-hap.calyx.org
+  User john
+  Port 27271
+  AddressFamily inet
+  ForwardAgent yes
+  ControlMaster no
+  ControlPath none
+  IdentityFile ~/.ssh/skvare_ed25519
+
+Host *-gambit.uschess.org dev-www1.uschess.org dev-secure2.uschess.org
+  AddressFamily inet
+  ForwardAgent yes
+  Port 27271
+  ControlMaster no
+  ControlPath none
+  IdentityFile ~/.ssh/skvare_ed25519
+
+Host vpn1.ws
+  HostName vpn1.warmshowers.org
+  AddressFamily inet
+  ForwardAgent yes
+  Port 27271
+  ControlMaster no
+  ControlPath none
+  IdentityFile ~/.ssh/skvare_ed25519
+
+Host vpn1.skvare.com
+  HostName vpn1.skvare.com
+  AddressFamily inet
+  ForwardAgent yes
+  Port 27271
+  ControlMaster no
+  ControlPath none
+  IdentityFile ~/.ssh/skvare_ed25519
+
+Host vpn1
+  HostName vpn1.skvare.com
+  AddressFamily inet
+  ForwardAgent yes
+  Port 27271
+  ControlMaster no
+  ControlPath none
+  IdentityFile ~/.ssh/skvare_ed25519
+
+Host mr1.skvare.com
+  ProxyJump vpn1
+  AddressFamily inet
+  ForwardAgent yes
+  Port 27271
+  ControlMaster no
+  ControlPath none
+  IdentityFile ~/.ssh/skvare_ed25519
+
+Host *.skvare.com
+  ProxyJump vpn1
+  AddressFamily inet
+  ForwardAgent yes
+  Port 27271
+  ControlMaster no
+  ControlPath none
+  IdentityFile ~/.ssh/skvare_ed25519
+
+Host *.warmshowers.org
+  ProxyJump vpn1.ws
+
+# Fallback:
+# Matches anything that doesn't have a value at this point
+Host *
+  User john
+  ControlMaster auto
+  ControlPersist yes
+  ControlPath ~/.ssh/sockets/socket-%r@%h:%p
+  IdentityFile ~/.ssh/id_ed25519
+  AddKeysToAgent yes
+

@@ -1,0 +1,54 @@
+[user]
+    name = {{ .git.name }}
+    email = {{ .git.email }}
+    signingkey = {{ .git.signingKey }}
+
+[includeIf "gitdir:~/Workspace/Skvare/"]
+    path = ~/.gitconfig.skvare
+
+[includeIf "gitdir:~/University/"]
+    path = ~/.gitconfig.university
+
+[includeIf "gitdir:~/Workspace/Research/"]
+    path = ~/.gitconfig.university
+
+[core]
+    editor = nano
+    hooksPath = ~/{{ .git.hooksPath }}
+
+[alias]
+    hist = log --all --graph --decorate --oneline
+    undo-commit = reset --soft HEAD^
+
+[credential]
+    helper = store
+
+[commit]
+    gpgsign = true
+
+[gpg]
+    format = ssh
+
+[gpg "ssh"]
+    allowedSignersFile = ~/.config/git/allowed_signers
+
+[status]
+    showUntrackedFiles = all
+
+[push]
+    default = simple
+
+[transfer]
+    fsckobjects = true
+
+[fetch]
+    fsckobjects = true
+
+[receive]
+    fsckObjects = true
+
+[init]
+    defaultBranch = main
+
+[safe]
+    directory = /net/lilan.ramsden.network/mnt/tank/data/john/data/UBC/OxCache-WiredTiger-Trace

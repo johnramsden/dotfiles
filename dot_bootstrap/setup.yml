@@ -1,0 +1,196 @@
+---
+- name: Setup dotfiles machine
+  hosts: localhost
+  connection: local
+  become: false
+
+  vars:
+    is_arch: "{{ ansible_distribution == 'Archlinux' }}"
+    is_ubuntu: "{{ ansible_distribution == 'Ubuntu' or ansible_distribution == 'Debian' }}"
+    hostname: "{{ ansible_hostname }}"
+    is_can: "{{ hostname == 'can' }}"
+    has_systemd: "{{ hostname in ['fenix', 'wooly', 'enix'] }}"
+
+    # Git repositories to keep updated
+    git_repos:
+      - repo: 'https://github.com/ohmyzsh/ohmyzsh.git'
+        dest: "{{ ansible_env.HOME }}/.local/share/oh-my-zsh"
+        depth: 1
+      - repo: 'https://github.com/zsh-users/zsh-autosuggestions.git'
+        dest: "{{ ansible_env.HOME }}/.config/oh-my-zsh/custom/plugins/zsh-autosuggestions"
+      - repo: 'https://github.com/MichaelAquilina/zsh-you-should-use.git'
+        dest: "{{ ansible_env.HOME }}/.config/oh-my-zsh/custom/plugins/you-should-use"
+      - repo: 'https://github.com/tommarshall/git-good-commit.git'
+        dest: "{{ ansible_env.HOME }}/.config/git/templates/available/hooks/git-good-commit"
+
+  tasks:
+    - name: Display detected configuration
+      debug:
+        msg:
+          - "Hostname: {{ hostname }}"
+          - "Distribution: {{ ansible_distribution }}"
+          - "Is Arch: {{ is_arch }}"
+          - "Is Ubuntu: {{ is_ubuntu }}"
+          - "Has systemd services: {{ has_systemd }}"
+          - "Is Canonical host: {{ is_can }}"
+
+    # ==================== ARCH LINUX PACKAGES ====================
+    - name: Install packages (Arch Linux)
+      become: true
+      community.general.pacman:
+        name:
+          - git
+          - zsh
+          - openssh
+          - curl
+          - wget
+          - nano
+          - base-devel
+          - flatpak
+          - man-db
+          - man-pages
+          - rsync
+          - htop
+          - neofetch
+        state: present
+        update_cache: true
+      when: is_arch | bool
+
+    # ==================== UBUNTU PACKAGES ====================
+    - name: Install packages (Ubuntu/Debian)
+      become: true
+      apt:
+        name:
+          - git
+          - zsh
+          - openssh-client
+          - curl
+          - wget
+          - nano
+          - build-essential
+          - flatpak
+          - man-db
+          - manpages
+          - rsync
+          - htop
+          - neofetch
+        state: present
+        update_cache: true
+      when: is_ubuntu | bool
+
+    # ==================== DIRECTORIES ====================
+    - name: Create required directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0755'
+      loop:
+        - "{{ ansible_env.HOME }}/.local/bin"
+        - "{{ ansible_env.HOME }}/.local/share"
+        - "{{ ansible_env.HOME }}/.config"
+        - "{{ ansible_env.HOME }}/.config/git"
+
+    - name: Create SSH directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: '0700'
+      loop:
+        - "{{ ansible_env.HOME }}/.ssh/sockets"
+        - "{{ ansible_env.HOME }}/.ssh/keys"
+
+    # ==================== CANONICAL WORKSPACE (can only) ====================
+    - name: Create Canonical workspace directory
+      file:
+        path: "{{ ansible_env.HOME }}/Canonical"
+        state: directory
+        mode: '0755'
+      when: is_can | bool
+
+    # ==================== SYSTEMD USER SERVICES (not on can) ====================
+    - name: Enable and start ssh-agent service
+      systemd:
+        name: ssh-agent.service
+        enabled: true
+        state: started
+        scope: user
+      when: has_systemd | bool
+
+    - name: Enable and start update-flatpaks timer
+      systemd:
+        name: update-flatpaks.timer
+        enabled: true
+        state: started
+        scope: user
+      when: has_systemd | bool
+
+    # ==================== SHELL ====================
+    - name: Change default shell to zsh
+      become: true
+      user:
+        name: "{{ ansible_env.USER }}"
+        shell: /usr/bin/zsh
+
+    # ==================== GIT REPOSITORIES ====================
+    - name: Clone or update git repositories
+      ansible.builtin.git:
+        repo: "{{ item.repo }}"
+        dest: "{{ item.dest }}"
+        update: true
+        version: HEAD
+        depth: "{{ item.depth | default(omit) }}"
+      loop: "{{ git_repos }}"
+      tags: [repos, update]
+
+    # ==================== GIT HOOKS ====================
+    - name: Create git hooks directory
+      file:
+        path: "{{ ansible_env.HOME }}/.config/git/hooks"
+        state: directory
+        mode: '0755'
+
+    - name: Create commit-msg hook symlink
+      file:
+        src: "{{ ansible_env.HOME }}/.config/git/templates/available/hooks/git-good-commit/hook.sh"
+        dest: "{{ ansible_env.HOME }}/.config/git/hooks/commit-msg"
+        state: link
+
+    # ==================== SSH SIGNING SETUP ====================
+    - name: Check if SSH key exists
+      stat:
+        path: "{{ ansible_env.HOME }}/.ssh/id_ed25519"
+      register: ssh_key_ed25519
+
+    - name: Check if RSA key exists (for can)
+      stat:
+        path: "{{ ansible_env.HOME }}/.ssh/id_rsa"
+      register: ssh_key_rsa
+      when: is_can | bool
+
+    - name: Display SSH key setup message (ed25519 for Arch hosts)
+      debug:
+        msg:
+          - "SSH signing key setup (ed25519):"
+          - "  1. Generate key: ssh-keygen -t ed25519 -C 'johnramsden@riseup.net'"
+          - "  2. Add to allowed_signers: echo 'johnramsden@riseup.net $(cat ~/.ssh/id_ed25519.pub)' >> ~/.config/git/allowed_signers"
+          - "  3. Add to GitHub/GitLab as signing key"
+      when: not is_can | bool and not ssh_key_ed25519.stat.exists
+
+    - name: Display SSH key setup message (RSA for can)
+      debug:
+        msg:
+          - "SSH signing key setup (RSA for Canonical):"
+          - "  1. Generate key: ssh-keygen -t rsa -b 4096 -C 'john.ramsden@canonical.com'"
+          - "  2. Add to allowed_signers: echo 'john.ramsden@canonical.com $(cat ~/.ssh/id_rsa.pub)' >> ~/.config/git/allowed_signers"
+          - "  3. Add to GitHub/GitLab as signing key"
+      when: is_can | bool and not ssh_key_rsa.stat.exists
+
+    # ==================== COMPLETION ====================
+    - name: Bootstrap complete message
+      debug:
+        msg:
+          - "=== Bootstrap Complete ==="
+          - "Next steps:"
+          - "  - Logout and login to activate zsh"
+          - "  - Setup SSH signing key if needed"
+          - "  - Verify systemd services: systemctl --user status ssh-agent update-flatpaks.timer"

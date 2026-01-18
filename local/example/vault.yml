@@ -1,7 +1,0 @@
-vault:
-    ansible:
-        ansible_become_pass: "PASSWORD"
-    conky:
-        email:
-            user: "email@example.ca"
-            password: "PASSWORD"
