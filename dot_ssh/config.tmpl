@@ -8,7 +8,7 @@
 Host *github.com
   User git
   HostName github.com
-  IdentityFile ~/.ssh/git_ed25519
+  IdentityFile ~/.ssh/{{ .gitSshKey }}
   PreferredAuthentications publickey
 
 Host aur.archlinux.org
