@@ -26,6 +26,7 @@
         email = {{ $gitEmail | quote }}
         signingKey = {{ $gitSigningKey | quote }}
         hooksPath = ".config/git/hooks"
+        gitSshKey = {{ $gitSshKey }}
 
 [edit]
     command = "nano"
