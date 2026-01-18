@@ -53,7 +53,7 @@ echo "✓ Base packages installed"
 echo ""
 
 # Prompt for repo URL
-read -p "Enter dotfiles repo URL (e.g., git@github.com:johnramsden/dotfiles.git): " REPO_URL
+read -p "Enter dotfiles repo URL (e.g., git@github.com:johnramsden/dotfiles.git): " REPO_URL </dev/tty
 
 # Initialize and apply chezmoi
 echo ""
