@@ -1,7 +1,7 @@
 # Skip systemd services and PAM on can (Ubuntu)
 {{ if .isCan }}
 .config/systemd/
-.pam_environment
+.config/environment.d/ssh-agent.conf
 {{ end }}
 
 # Don't deploy these to home
