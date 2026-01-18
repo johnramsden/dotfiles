@@ -52,6 +52,7 @@
           - rsync
           - htop
           - neofetch
+          - fastfetch
         state: present
         update_cache: true
       when: is_arch | bool
