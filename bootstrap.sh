@@ -55,10 +55,26 @@ echo ""
 # Prompt for repo URL
 read -p "Enter dotfiles repo URL (e.g., git@github.com:johnramsden/dotfiles.git): " REPO_URL </dev/tty
 
+# Convert SSH URL to HTTPS for initial clone
+HTTPS_URL="$REPO_URL"
+if [[ "$REPO_URL" =~ ^git@github\.com:(.+)$ ]]; then
+    HTTPS_URL="https://github.com/${BASH_REMATCH[1]}"
+    echo "Converting to HTTPS URL for initial clone: $HTTPS_URL"
+fi
+
 # Initialize and apply chezmoi
 echo ""
-echo "Initializing chezmoi from $REPO_URL..."
-chezmoi init --apply "$REPO_URL"
+echo "Initializing chezmoi from $HTTPS_URL..."
+chezmoi init --apply "$HTTPS_URL"
+
+# Switch remote back to SSH if original was SSH
+if [[ "$REPO_URL" != "$HTTPS_URL" ]]; then
+    echo ""
+    echo "Switching remote to SSH URL..."
+    cd "$HOME/.local/share/chezmoi"
+    git remote set-url origin "$REPO_URL"
+    echo "✓ Remote set to: $REPO_URL"
+fi
 
 echo ""
 echo "=============================================="
