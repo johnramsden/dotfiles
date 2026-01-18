@@ -1,0 +1,28 @@
+---
+# Canonical (Ubuntu) specific tasks
+
+- name: Install packages (Ubuntu/Debian)
+  become: true
+  apt:
+    name:
+      - git
+      - zsh
+      - openssh-client
+      - curl
+      - wget
+      - nano
+      - build-essential
+      - flatpak
+      - man-db
+      - manpages
+      - rsync
+      - htop
+      - neofetch
+    state: present
+    update_cache: true
+
+- name: Create Canonical workspace directory
+  file:
+    path: "{{ ansible_env.HOME }}/Canonical"
+    state: directory
+    mode: '0755'

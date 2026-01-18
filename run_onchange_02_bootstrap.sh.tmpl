@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Hash of setup.yml - changing this triggers re-run
+# Hash of ansible files - changing any triggers re-run
 # {{ include "dot_bootstrap/setup.yml" | sha256sum }}
+# {{ include "dot_bootstrap/tasks/arch.yml" | sha256sum }}
+# {{ include "dot_bootstrap/tasks/canonical.yml" | sha256sum }}
 
 echo "=== Running Ansible Bootstrap ==="
 

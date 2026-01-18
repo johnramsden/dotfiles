@@ -1,0 +1,39 @@
+---
+# Arch Linux specific tasks
+
+- name: Install packages (Arch Linux)
+  become: true
+  community.general.pacman:
+    name:
+      - git
+      - zsh
+      - openssh
+      - curl
+      - wget
+      - nano
+      - base-devel
+      - flatpak
+      - man-db
+      - man-pages
+      - rsync
+      - htop
+      - neofetch
+      - fastfetch
+    state: present
+    update_cache: true
+
+- name: Enable and start ssh-agent service
+  systemd:
+    name: ssh-agent.service
+    enabled: true
+    state: started
+    scope: user
+  when: has_systemd | bool
+
+- name: Enable and start update-flatpaks timer
+  systemd:
+    name: update-flatpaks.timer
+    enabled: true
+    state: started
+    scope: user
+  when: has_systemd | bool

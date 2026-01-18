@@ -34,49 +34,13 @@
           - "Has systemd services: {{ has_systemd }}"
           - "Is Canonical host: {{ is_can }}"
 
-    # ==================== ARCH LINUX PACKAGES ====================
-    - name: Install packages (Arch Linux)
-      become: true
-      community.general.pacman:
-        name:
-          - git
-          - zsh
-          - openssh
-          - curl
-          - wget
-          - nano
-          - base-devel
-          - flatpak
-          - man-db
-          - man-pages
-          - rsync
-          - htop
-          - neofetch
-          - fastfetch
-        state: present
-        update_cache: true
+    # ==================== DISTRO-SPECIFIC TASKS ====================
+    - name: Include Arch Linux tasks
+      include_tasks: tasks/arch.yml
       when: is_arch | bool
 
-    # ==================== UBUNTU PACKAGES ====================
-    - name: Install packages (Ubuntu/Debian)
-      become: true
-      apt:
-        name:
-          - git
-          - zsh
-          - openssh-client
-          - curl
-          - wget
-          - nano
-          - build-essential
-          - flatpak
-          - man-db
-          - manpages
-          - rsync
-          - htop
-          - neofetch
-        state: present
-        update_cache: true
+    - name: Include Canonical/Ubuntu tasks
+      include_tasks: tasks/canonical.yml
       when: is_ubuntu | bool
 
     # ==================== DIRECTORIES ====================
@@ -99,31 +63,6 @@
       loop:
         - "{{ ansible_env.HOME }}/.ssh/sockets"
         - "{{ ansible_env.HOME }}/.ssh/keys"
-
-    # ==================== CANONICAL WORKSPACE (can only) ====================
-    - name: Create Canonical workspace directory
-      file:
-        path: "{{ ansible_env.HOME }}/Canonical"
-        state: directory
-        mode: '0755'
-      when: is_can | bool
-
-    # ==================== SYSTEMD USER SERVICES (not on can) ====================
-    - name: Enable and start ssh-agent service
-      systemd:
-        name: ssh-agent.service
-        enabled: true
-        state: started
-        scope: user
-      when: has_systemd | bool
-
-    - name: Enable and start update-flatpaks timer
-      systemd:
-        name: update-flatpaks.timer
-        enabled: true
-        state: started
-        scope: user
-      when: has_systemd | bool
 
     # ==================== SHELL ====================
     - name: Change default shell to zsh

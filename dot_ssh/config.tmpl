@@ -11,6 +11,9 @@ Host *github.com
   IdentityFile ~/.ssh/{{ .git.gitSshKey }}
   PreferredAuthentications publickey
 
+{{ if .isCan }}
+
+{{ else }}
 Host aur.archlinux.org
   IdentityFile ~/.ssh/keys/aur_rsa
   User johnramsden
@@ -75,24 +78,6 @@ Host lilan.jump.pfsense
 Host wrath.jump.pfsense
   HostName wrath.ramsden.network
   ProxyJump jump.pfsense
-
-## Internal Hosts ##
-
-# Computers
-
-Host wooly
-  HostName wooly.ramsden.network
-Host wifi.wooly
-  HostName wifi-wooly.ramsden.network
-Host enix
-  HostName enix.ramsden.network
-Host fenix
-  HostName fenix.ramsden.network
-
-# Servers
-
-Host lilan
-  HostName lilan.ramsden.network
 
 ## SKVARE / US Chess ##
 
@@ -204,6 +189,25 @@ Host *.skvare.com
 
 Host *.warmshowers.org
   ProxyJump vpn1.ws
+{{ end }}
+
+## Global ##
+
+# Computers
+
+Host wooly
+  HostName wooly.ramsden.network
+Host wifi.wooly
+  HostName wifi-wooly.ramsden.network
+Host enix
+  HostName enix.ramsden.network
+Host fenix
+  HostName fenix.ramsden.network
+
+# Servers
+
+Host lilan
+  HostName lilan.ramsden.network
 
 # Fallback:
 # Matches anything that doesn't have a value at this point
