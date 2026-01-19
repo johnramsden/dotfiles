@@ -1,0 +1,41 @@
+---
+# External APT repositories for Ubuntu/Debian
+# Each entry defines: name, gpg_key_url, repo_line, keyring_path
+
+external_repos:
+  - name: google-chrome
+    gpg_key_url: https://dl.google.com/linux/linux_signing_key.pub
+    keyring_path: /etc/apt/keyrings/google-chrome.gpg
+    repo_line: "deb [arch=amd64 signed-by=/etc/apt/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main"
+    packages:
+      - google-chrome-stable
+
+  - name: vscode
+    gpg_key_url: https://packages.microsoft.com/keys/microsoft.asc
+    keyring_path: /etc/apt/keyrings/packages.microsoft.gpg
+    repo_line: "deb [arch=amd64 signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main"
+    packages:
+      - code
+
+  - name: spotify
+    gpg_key_url: https://download.spotify.com/debian/pubkey_C85668DF69375001.gpg
+    keyring_path: /etc/apt/keyrings/spotify.gpg
+    repo_line: "deb [signed-by=/etc/apt/keyrings/spotify.gpg] http://repository.spotify.com stable non-free"
+    packages:
+      - spotify-client
+
+  - name: mattermost-desktop
+    gpg_key_url: https://deb.packages.mattermost.com/pubkey.gpg
+    keyring_path: /etc/apt/keyrings/mattermost-archive-keyring.gpg
+    repo_line: "deb [signed-by=/etc/apt/keyrings/mattermost-archive-keyring.gpg] https://deb.packages.mattermost.com stable main"
+    packages:
+      - mattermost-desktop
+
+# Snap packages (for apps without apt repos)
+snap_packages:
+  - name: pycharm-professional
+    classic: true
+  - name: gitkraken
+    classic: true
+  - name: discord
+    classic: false

@@ -5,6 +5,9 @@ set -euo pipefail
 # {{ include "dot_bootstrap/setup.yml" | sha256sum }}
 # {{ include "dot_bootstrap/tasks/arch.yml" | sha256sum }}
 # {{ include "dot_bootstrap/tasks/canonical.yml" | sha256sum }}
+# {{ include "dot_bootstrap/tasks/external_repos.yml" | sha256sum }}
+# {{ include "dot_bootstrap/tasks/snap_packages.yml" | sha256sum }}
+# {{ include "dot_bootstrap/vars/external_repos.yml" | sha256sum }}
 
 echo "=== Running Ansible Bootstrap ==="
 
@@ -15,10 +18,19 @@ fi
 
 PLAYBOOK="{{ joinPath .chezmoi.sourceDir "dot_bootstrap/setup.yml" }}"
 
+# Build ansible-playbook arguments
+ANSIBLE_ARGS=("$PLAYBOOK" "--ask-become-pass")
+
+# Support dry-run mode via environment variable
+if [[ "${BOOTSTRAP_DRY_RUN:-}" == "1" || "${BOOTSTRAP_DRY_RUN:-}" == "true" ]]; then
+    echo "DRY-RUN MODE: No changes will be made"
+    ANSIBLE_ARGS+=("--check" "--diff")
+fi
+
 echo "Running playbook: $PLAYBOOK"
 echo ""
 
-ansible-playbook "$PLAYBOOK" --ask-become-pass
+ansible-playbook "${ANSIBLE_ARGS[@]}"
 
 echo ""
 echo "✓ Ansible bootstrap complete"

@@ -1,0 +1,45 @@
+---
+# Tasks for adding external APT repositories
+# Requires: external_repos variable from vars/external_repos.yml
+
+- name: Ensure apt keyrings directory exists
+  become: true
+  file:
+    path: /etc/apt/keyrings
+    state: directory
+    mode: '0755'
+
+- name: Download and install GPG keys for external repositories
+  become: true
+  shell: |
+    curl -fsSL "{{ item.gpg_key_url }}" | gpg --dearmor -o "{{ item.keyring_path }}"
+    chmod 644 "{{ item.keyring_path }}"
+  args:
+    creates: "{{ item.keyring_path }}"
+  loop: "{{ external_repos }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Add external APT repositories
+  become: true
+  apt_repository:
+    repo: "{{ item.repo_line }}"
+    state: present
+    filename: "{{ item.name }}"
+  loop: "{{ external_repos }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Update apt cache after adding repositories
+  become: true
+  apt:
+    update_cache: true
+
+- name: Install packages from external repositories
+  become: true
+  apt:
+    name: "{{ item.1 }}"
+    state: present
+  loop: "{{ external_repos | subelements('packages') }}"
+  loop_control:
+    label: "{{ item.1 }}"

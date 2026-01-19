@@ -1,0 +1,29 @@
+---
+# Tasks for installing snap packages
+# Requires: snap_packages variable from vars/external_repos.yml
+
+- name: Ensure snapd is installed
+  become: true
+  apt:
+    name: snapd
+    state: present
+
+- name: Install snap packages (classic confinement)
+  become: true
+  community.general.snap:
+    name: "{{ item.name }}"
+    classic: true
+    state: present
+  loop: "{{ snap_packages | selectattr('classic', 'equalto', true) | list }}"
+  loop_control:
+    label: "{{ item.name }}"
+
+- name: Install snap packages (strict confinement)
+  become: true
+  community.general.snap:
+    name: "{{ item.name }}"
+    classic: false
+    state: present
+  loop: "{{ snap_packages | selectattr('classic', 'equalto', false) | list }}"
+  loop_control:
+    label: "{{ item.name }}"

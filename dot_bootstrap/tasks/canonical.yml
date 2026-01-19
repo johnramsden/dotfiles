@@ -1,7 +1,7 @@
 ---
 # Canonical (Ubuntu) specific tasks
 
-- name: Install packages (Ubuntu/Debian)
+- name: Install base packages (Ubuntu/Debian)
   become: true
   apt:
     name:
@@ -18,6 +18,8 @@
       - rsync
       - htop
       - neofetch
+      - gnupg
+      - ca-certificates
     state: present
     update_cache: true
 
@@ -26,3 +28,15 @@
     path: "{{ ansible_env.HOME }}/Canonical"
     state: directory
     mode: '0755'
+
+# ==================== EXTERNAL REPOSITORIES ====================
+- name: Load external repository definitions
+  include_vars:
+    file: "{{ playbook_dir }}/vars/external_repos.yml"
+
+- name: Setup external APT repositories
+  include_tasks: "{{ playbook_dir }}/tasks/external_repos.yml"
+
+# ==================== SNAP PACKAGES ====================
+- name: Install snap packages
+  include_tasks: "{{ playbook_dir }}/tasks/snap_packages.yml"
