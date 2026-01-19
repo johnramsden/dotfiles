@@ -40,3 +40,11 @@
 # ==================== SNAP PACKAGES ====================
 - name: Install snap packages
   include_tasks: "{{ playbook_dir }}/tasks/snap_packages.yml"
+
+# ==================== SYSTEMD USER SERVICES ====================
+- name: Enable and start ssh-agent service
+  systemd:
+    name: ssh-agent.service
+    enabled: true
+    state: started
+    scope: user

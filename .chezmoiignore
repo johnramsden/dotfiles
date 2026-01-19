@@ -1,7 +1,11 @@
-# Skip systemd services and PAM on can (Ubuntu)
+# Platform-specific ignores
 {{ if .isCan }}
-.config/systemd/
-.config/environment.d/ssh-agent.conf
+# Skip flatpak timer on Ubuntu (managed differently or not needed)
+.config/systemd/user/update-flatpaks.service
+.config/systemd/user/update-flatpaks.timer
+{{ else }}
+# Skip snap config on Arch
+.config/environment.d/50-snap.conf
 {{ end }}
 
 # Don't deploy these to home
