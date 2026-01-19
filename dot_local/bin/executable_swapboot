@@ -1,8 +1,22 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CONF="/efi/loader/loader.conf"
-ENTRIES_DIR="/efi/loader/entries"
+# Find EFI partition by looking for loader.conf
+EFI_ROOT=""
+for candidate in /efi /boot/efi; do
+  if [[ -f "${candidate}/loader/loader.conf" ]]; then
+    EFI_ROOT="$candidate"
+    break
+  fi
+done
+
+if [[ -z "$EFI_ROOT" ]]; then
+  echo "Error: Could not find loader.conf in /efi or /boot/efi"
+  exit 1
+fi
+
+CONF="${EFI_ROOT}/loader/loader.conf"
+ENTRIES_DIR="${EFI_ROOT}/loader/entries"
 BACKUP="${CONF}.bak"
 
 usage() {
