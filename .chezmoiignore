@@ -6,7 +6,9 @@
 {{ else }}
 # Skip snap config on Arch
 .config/environment.d/50-snap.conf
+.config/plasma-workspace/env/snap.sh
 .Xresources
+
 {{ end }}
 
 # Don't deploy these to home

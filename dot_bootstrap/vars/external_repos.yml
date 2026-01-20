@@ -24,11 +24,14 @@ external_debs:
   - name: google-chrome
     deb_url: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 
-# Snap packages (for apps without apt repos)
 snap_packages:
   - name: pycharm-professional
     classic: true
   - name: gitkraken
     classic: true
   - name: discord
+    classic: false
+  - name: lxd
+    classic: false
+  - name: juju
     classic: false
