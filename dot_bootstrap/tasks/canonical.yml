@@ -25,6 +25,8 @@
       - network-manager-openvpn  # VPN
       - plasma-nm                # VPN
       - guvcview
+      - autofs
+      - okular
     state: present
     update_cache: true
 
