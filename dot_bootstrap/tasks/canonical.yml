@@ -22,6 +22,9 @@
       - ca-certificates
       - kclock
       - syncthing
+      - network-manager-openvpn  # VPN
+      - plasma-nm                # VPN
+      - guvcview
     state: present
     update_cache: true
 

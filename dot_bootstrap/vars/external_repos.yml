@@ -3,20 +3,6 @@
 # Each entry defines: name, gpg_key_url, repo_line, keyring_path
 
 external_repos:
-  - name: google-chrome
-    gpg_key_url: https://dl.google.com/linux/linux_signing_key.pub
-    keyring_path: /etc/apt/keyrings/google-chrome.gpg
-    repo_line: "deb [arch=amd64 signed-by=/etc/apt/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main"
-    packages:
-      - google-chrome-stable
-
-  - name: vscode
-    gpg_key_url: https://packages.microsoft.com/keys/microsoft.asc
-    keyring_path: /etc/apt/keyrings/packages.microsoft.gpg
-    repo_line: "deb [arch=amd64 signed-by=/etc/apt/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main"
-    packages:
-      - code
-
   - name: spotify
     gpg_key_url: https://download.spotify.com/debian/pubkey_C85668DF69375001.gpg
     keyring_path: /etc/apt/keyrings/spotify.gpg
@@ -30,6 +16,13 @@ external_repos:
     repo_line: "deb [signed-by=/etc/apt/keyrings/mattermost-archive-keyring.gpg] https://deb.packages.mattermost.com stable main"
     packages:
       - mattermost-desktop
+
+# Direct .deb packages (for apps that manage their own repos)
+external_debs:
+  - name: vscode
+    deb_url: "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
+  - name: google-chrome
+    deb_url: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 
 # Snap packages (for apps without apt repos)
 snap_packages:

@@ -1,5 +1,5 @@
 ---
-# Tasks for adding external APT repositories
+# Tasks for adding external APT repositories.
 # Requires: external_repos variable from vars/external_repos.yml
 
 - name: Ensure apt keyrings directory exists
@@ -43,3 +43,11 @@
   loop: "{{ external_repos | subelements('packages') }}"
   loop_control:
     label: "{{ item.1 }}"
+
+- name: Install packages from direct .deb URLs
+  become: true
+  apt:
+    deb: "{{ item.deb_url }}"
+  loop: "{{ external_debs }}"
+  loop_control:
+    label: "{{ item.name }}"
