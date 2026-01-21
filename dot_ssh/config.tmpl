@@ -12,6 +12,11 @@ Host *github.com
   PreferredAuthentications publickey
 
 {{ if .isCan }}
+# Dont use shared connection on 10.* (LXD local)
+Host 10.*
+    ControlMaster no
+    ControlPath none
+    ControlPersist no
 
 {{ else }}
 Host aur.archlinux.org

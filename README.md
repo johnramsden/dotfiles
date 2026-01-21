@@ -42,22 +42,22 @@ chezmoi init --apply git@github.com:johnramsden/dotfiles.git
 
 ```bash
 # Generate ed25519 key
-ssh-keygen -t ed25519 -C "johnramsden@riseup.net"
+ssh-keygen -t ed25519 -C "$EMAIL"
 
 # Add to allowed_signers
-echo "johnramsden@riseup.net $(cat ~/.ssh/id_ed25519.pub)" >> ~/.config/git/allowed_signers
+echo ""$EMAIL" $(cat ~/.ssh/id_ed25519.pub)" >> ~/.config/git/allowed_signers
 
 # Add to GitHub/GitLab as signing key
 ```
 
-### On can (Ubuntu/Canonical)
+### RSA
 
 ```bash
 # Generate RSA key
-ssh-keygen -t rsa -b 4096 -C "john.ramsden@canonical.com"
+ssh-keygen -t rsa -b 4096 -C "$EMAIL"
 
 # Add to allowed_signers
-echo "john.ramsden@canonical.com $(cat ~/.ssh/id_rsa.pub)" >> ~/.config/git/allowed_signers
+echo ""$EMAIL" $(cat ~/.ssh/id_rsa.pub)" >> ~/.config/git/allowed_signers
 
 # Add to GitHub/GitLab as signing key
 ```
