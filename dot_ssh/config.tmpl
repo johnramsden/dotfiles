@@ -12,11 +12,6 @@ Host *github.com
   PreferredAuthentications publickey
 
 {{ if .isCan }}
-# Dont use shared connection on 10.* fd42:* (LXD local)
-Host 10.*
-    ControlMaster no
-    ControlPath none
-    ControlPersist no
 
 {{ else }}
 Host aur.archlinux.org
@@ -218,9 +213,5 @@ Host lilan
 # Matches anything that doesn't have a value at this point
 Host *
   User john
-  ControlMaster auto
-  ControlPersist yes
-  ControlPath ~/.ssh/sockets/socket-%r@%h:%p
-  IdentityFile ~/.ssh/id_ed25519
   AddKeysToAgent yes
 
