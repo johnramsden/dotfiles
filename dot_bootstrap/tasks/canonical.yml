@@ -27,6 +27,7 @@
       - guvcview
       - autofs
       - okular
+      - ubuntu-dev-tools
     state: present
     update_cache: true
 
