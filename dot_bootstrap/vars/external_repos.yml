@@ -27,6 +27,8 @@ external_debs:
 snap_packages:
   - name: pycharm-professional
     classic: true
+  - name: goland
+    classic: true
   - name: gitkraken
     classic: true
   - name: discord
