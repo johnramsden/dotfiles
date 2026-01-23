@@ -41,3 +41,5 @@ snap_packages:
     classic: true
   - name: multipass
     classic: false
+  - name: rockcraft
+    classic: true
