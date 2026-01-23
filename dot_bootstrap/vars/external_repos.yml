@@ -35,3 +35,4 @@ snap_packages:
   - {name: snapcraft, classic: true}
   - {name: multipass}
   - {name: rockcraft, classic: true}
+  - {name: docker}
