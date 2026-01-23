@@ -24,22 +24,14 @@ external_debs:
   - name: google-chrome
     deb_url: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 
+# classic defaults to false if not specified
 snap_packages:
-  - name: pycharm-professional
-    classic: true
-  - name: goland
-    classic: true
-  - name: gitkraken
-    classic: true
-  - name: discord
-    classic: false
-  - name: lxd
-    classic: false
-  - name: juju
-    classic: false
-  - name: snapcraft
-    classic: true
-  - name: multipass
-    classic: false
-  - name: rockcraft
-    classic: true
+  - {name: pycharm-professional, classic: true}
+  - {name: goland, classic: true}
+  - {name: gitkraken, classic: true}
+  - {name: discord}
+  - {name: lxd}
+  - {name: juju}
+  - {name: snapcraft, classic: true}
+  - {name: multipass}
+  - {name: rockcraft, classic: true}
