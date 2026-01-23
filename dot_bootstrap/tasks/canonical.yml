@@ -27,7 +27,9 @@
       - guvcview
       - autofs
       - okular
-      - ubuntu-dev-tools
+      - ubuntu-dev-tools         # dev
+      - tox                      # dev (python)
+      - apt-file                 # List apt pkg contents
     state: present
     update_cache: true
 

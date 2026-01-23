@@ -37,3 +37,7 @@ snap_packages:
     classic: false
   - name: juju
     classic: false
+  - name: snapcraft
+    classic: true
+  - name: multipass
+    classic: false
