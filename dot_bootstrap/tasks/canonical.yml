@@ -24,12 +24,15 @@
       - syncthing
       - network-manager-openvpn  # VPN
       - plasma-nm                # VPN
-      - guvcview
+      - guvcview                 # Webcam settings
       - autofs
       - okular
       - ubuntu-dev-tools         # dev
       - tox                      # dev (python)
       - apt-file                 # List apt pkg contents
+      - python3-pip
+      - python3-venv
+      - unzip
     state: present
     update_cache: true
 

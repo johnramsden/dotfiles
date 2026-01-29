@@ -48,7 +48,7 @@
       file:
         path: "{{ item }}"
         state: directory
-        mode: '0755'
+        mode: '0775'
       loop:
         - "{{ ansible_env.HOME }}/.local/bin"
         - "{{ ansible_env.HOME }}/.local/share"

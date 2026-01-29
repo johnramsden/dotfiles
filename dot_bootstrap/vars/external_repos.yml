@@ -36,3 +36,4 @@ snap_packages:
   - {name: multipass}
   - {name: rockcraft, classic: true}
   - {name: docker}
+  - {name: jhack, channel: "edge"}

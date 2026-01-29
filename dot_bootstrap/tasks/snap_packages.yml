@@ -13,6 +13,7 @@
   community.general.snap:
     name: "{{ item.name }}"
     classic: "{{ item.classic | default(false) }}"
+    channel: "{{ item.channel | default(omit) }}"
     state: present
   loop: "{{ snap_packages }}"
   loop_control:
