@@ -3,13 +3,6 @@
 # Each entry defines: name, gpg_key_url, repo_line, keyring_path
 
 external_repos:
-  - name: spotify
-    gpg_key_url: https://download.spotify.com/debian/pubkey_C85668DF69375001.gpg
-    keyring_path: /etc/apt/keyrings/spotify.gpg
-    repo_line: "deb [signed-by=/etc/apt/keyrings/spotify.gpg] http://repository.spotify.com stable non-free"
-    packages:
-      - spotify-client
-
   - name: mattermost-desktop
     gpg_key_url: https://deb.packages.mattermost.com/pubkey.gpg
     keyring_path: /etc/apt/keyrings/mattermost-archive-keyring.gpg
@@ -40,3 +33,4 @@ snap_packages:
   - {name: microk8s, channel: "1.28-strict/stable"}
   - {name: charmcraft, classic: true}
   - {name: testflinger-cli}
+  - {name: spotify}
