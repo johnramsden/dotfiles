@@ -20,8 +20,6 @@
         dest: "{{ ansible_env.HOME }}/.config/oh-my-zsh/custom/plugins/zsh-autosuggestions"
       - repo: 'https://github.com/MichaelAquilina/zsh-you-should-use.git'
         dest: "{{ ansible_env.HOME }}/.config/oh-my-zsh/custom/plugins/you-should-use"
-      - repo: 'https://github.com/tommarshall/git-good-commit.git'
-        dest: "{{ ansible_env.HOME }}/.config/git/templates/available/hooks/git-good-commit"
 
   tasks:
     - name: Display detected configuration

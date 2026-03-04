@@ -35,6 +35,8 @@
       - unzip
       - tmux
       - pinentry-curses          # GPG pin
+      - golang-go
+      - openssh-server
     state: present
     update_cache: true
 
