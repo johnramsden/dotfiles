@@ -1,0 +1,15 @@
+# Global Behavioral Instructions
+
+## Git Commits
+
+- All commits must be signed (using GPG or SSH signing as configured in git).
+- All commits must include a `Signed-off-by` trailer.
+- Retrieve the user's name and email from `git config user.name` and `git config user.email` to construct the sign-off line.
+
+## Build & Test Execution
+
+- Before running builds or tests, always ask whether the user would like them run inside a virtual machine.
+- If the user has not yet provided a VM location in this session, run `multipass info` (with no arguments) to check if the current project directory is mounted in a Multipass VM.
+- If a mount matching the current project is found, offer to run the build/tests inside that VM via `multipass exec`.
+- When using `multipass exec`, always pass `--working-directory` to set the correct path inside the VM, rather than relying on the shell profile to `cd` into the right directory.
+- If no matching VM is found, proceed locally (or ask the user for a VM name).
