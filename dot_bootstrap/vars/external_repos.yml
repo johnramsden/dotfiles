@@ -35,3 +35,4 @@ snap_packages:
   - {name: testflinger-cli}
   - {name: spotify}
   - {name: gh}
+  - {name: element-desktop}
