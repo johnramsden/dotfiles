@@ -3,6 +3,7 @@
     "allow": [
       "Bash(multipass info*)",
       "Bash(multipass exec *)",
+      "Bash(multipass start *)",
       "Bash(git config user.name)",
       "Bash(git config user.email)"
     ]
