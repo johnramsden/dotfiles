@@ -5,6 +5,7 @@
 - All commits must be signed (using GPG or SSH signing as configured in git).
 - All commits must include a `Signed-off-by` trailer.
 - Retrieve the user's name and email from `git config user.name` and `git config user.email` to construct the sign-off line.
+- The user's `Signed-off-by` should come after any `Co-Authored-By`
 
 ## Build & Test Execution
 
