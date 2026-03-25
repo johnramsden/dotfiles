@@ -1,0 +1,32 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(multipass info*)",
+      "Bash(multipass exec *)",
+      "Bash(git config user.name)",
+      "Bash(git config user.email)"
+    ]
+  },
+  "hooks": {
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "notify-send 'Claude needs input 💬'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "notify-send 'Claude done ❇'"
+          }
+        ]
+      }
+    ]
+  }
+}
