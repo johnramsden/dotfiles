@@ -87,12 +87,6 @@
         state: directory
         mode: '0755'
 
-    - name: Create commit-msg hook symlink
-      file:
-        src: "{{ ansible_env.HOME }}/.config/git/templates/available/hooks/git-good-commit/hook.sh"
-        dest: "{{ ansible_env.HOME }}/.config/git/hooks/commit-msg"
-        state: link
-
     # ==================== SSH SIGNING SETUP ====================
     - name: Check if SSH key exists
       stat:
