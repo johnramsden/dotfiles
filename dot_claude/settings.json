@@ -1,11 +1,28 @@
 {
   "permissions": {
+    "deny": [
+      "Bash(gh pr create *)",
+      "Bash(gh pr merge *)",
+      "Bash(gh pr close *)",
+      "Bash(gh pr edit *)",
+      "Bash(gh issue create *)",
+      "Bash(gh issue close *)",
+      "Bash(gh issue edit *)",
+      "Bash(gh release create *)",
+      "Bash(gh release delete *)"
+    ],
     "allow": [
       "Bash(multipass info*)",
       "Bash(multipass exec *)",
       "Bash(multipass start *)",
       "Bash(git config user.name)",
-      "Bash(git config user.email)"
+      "Bash(git config user.email)",
+      "Bash(gh pr:*)",
+      "Bash(gh issue:*)",
+      "Bash(gh run:*)",
+      "Bash(gh api:*)",
+      "Bash(gh repo:*)",
+      "Bash(gh release:*)"
     ]
   },
   "hooks": {
@@ -29,5 +46,6 @@
         ]
       }
     ]
-  }
+  },
+  "voiceEnabled": true
 }
