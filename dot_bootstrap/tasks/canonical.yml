@@ -37,6 +37,7 @@
       - pinentry-curses          # GPG pin
       - golang-go
       - openssh-server
+      - xclip                    # clipboard in copilot
     state: present
     update_cache: true
 
