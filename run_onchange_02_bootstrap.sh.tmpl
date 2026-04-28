@@ -7,7 +7,10 @@ set -euo pipefail
 # {{ include "dot_bootstrap/tasks/canonical.yml" | sha256sum }}
 # {{ include "dot_bootstrap/tasks/external_repos.yml" | sha256sum }}
 # {{ include "dot_bootstrap/tasks/snap_packages.yml" | sha256sum }}
-# {{ include "dot_bootstrap/vars/external_repos.yml" | sha256sum }}
+# {{ include "dot_bootstrap/vars/ubuntu_base.yml" | sha256sum }}
+# {{ include "dot_bootstrap/vars/hosts/can.yml" | sha256sum }}
+# {{ include "dot_bootstrap/vars/hosts/temp.yml" | sha256sum }}
+# {{ include "dot_bootstrap/vars/hosts/default.yml" | sha256sum }}
 
 echo "=== Running Ansible Bootstrap ==="
 
