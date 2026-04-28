@@ -1,8 +1,13 @@
 ---
-# External APT repositories for Ubuntu/Debian
-# Each entry defines: name, gpg_key_url, repo_line, keyring_path
+extra_apt_packages:
+  # KDE/Plasma
+  - kclock
+  - plasma-nm
+  - network-manager-openvpn
+  - guvcview
+  - okular
 
-external_repos:
+extra_external_repos:
   - name: mattermost-desktop
     gpg_key_url: https://deb.packages.mattermost.com/pubkey.gpg
     keyring_path: /etc/apt/keyrings/mattermost-archive-keyring.gpg
@@ -10,15 +15,13 @@ external_repos:
     packages:
       - mattermost-desktop
 
-# Direct .deb packages (for apps that manage their own repos)
-external_debs:
+extra_external_debs:
   - name: vscode
     deb_url: "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
   - name: google-chrome
     deb_url: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
 
-# classic defaults to false if not specified
-snap_packages:
+extra_snap_packages:
   - {name: pycharm-professional, classic: true}
   - {name: goland, classic: true}
   - {name: gitkraken, classic: true}

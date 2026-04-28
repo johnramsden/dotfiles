@@ -1,0 +1,31 @@
+---
+# Packages installed on every Ubuntu host
+ubuntu_base_packages:
+  - ubuntu-dev-tools
+  - tox
+  - apt-file
+  - golang-go
+  - openssh-server
+  - git
+  - zsh
+  - openssh-client
+  - curl
+  - wget
+  - nano
+  - build-essential
+  - flatpak
+  - man-db
+  - manpages
+  - rsync
+  - htop
+  - neofetch
+  - gnupg
+  - ca-certificates
+  - syncthing
+  - autofs
+  - python3-pip
+  - python3-venv
+  - unzip
+  - tmux
+  - pinentry-curses
+  - xclip

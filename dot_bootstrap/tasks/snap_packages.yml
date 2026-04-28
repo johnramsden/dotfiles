@@ -1,6 +1,6 @@
 ---
-# Tasks for installing snap packages
-# Requires: snap_packages variable from vars/external_repos.yml
+# Tasks for installing snap packages.
+# Requires: extra_snap_packages from host vars.
 
 - name: Ensure snapd is installed
   become: true
@@ -15,6 +15,6 @@
     classic: "{{ item.classic | default(false) }}"
     channel: "{{ item.channel | default(omit) }}"
     state: present
-  loop: "{{ snap_packages }}"
+  loop: "{{ extra_snap_packages }}"
   loop_control:
     label: "{{ item.name }}"

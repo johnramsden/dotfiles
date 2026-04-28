@@ -1,63 +1,50 @@
 ---
 # Canonical (Ubuntu) specific tasks
 
+# ==================== VARS ====================
+- name: Load Ubuntu base vars
+  include_vars: "{{ playbook_dir }}/vars/ubuntu_base.yml"
+
+- name: Load host-specific vars
+  include_vars: "{{ item }}"
+  with_first_found:
+    - files:
+        - "{{ playbook_dir }}/vars/hosts/{{ ansible_hostname }}.yml"
+        - "{{ playbook_dir }}/vars/hosts/default.yml"
+
+# ==================== BASE PACKAGES ====================
 - name: Install base packages (Ubuntu/Debian)
   become: true
   apt:
-    name:
-      - git
-      - zsh
-      - openssh-client
-      - curl
-      - wget
-      - nano
-      - build-essential
-      - flatpak
-      - man-db
-      - manpages
-      - rsync
-      - htop
-      - neofetch
-      - gnupg
-      - ca-certificates
-      - kclock
-      - syncthing
-      - network-manager-openvpn  # VPN
-      - plasma-nm                # VPN
-      - guvcview                 # Webcam settings
-      - autofs
-      - okular
-      - ubuntu-dev-tools         # dev
-      - tox                      # dev (python)
-      - apt-file                 # List apt pkg contents
-      - python3-pip
-      - python3-venv
-      - unzip
-      - tmux
-      - pinentry-curses          # GPG pin
-      - golang-go
-      - openssh-server
-      - xclip                    # clipboard in copilot
+    name: "{{ ubuntu_base_packages }}"
     state: present
     update_cache: true
 
+# ==================== HOST-SPECIFIC PACKAGES ====================
+- name: Install host-specific apt packages
+  become: true
+  apt:
+    name: "{{ extra_apt_packages }}"
+    state: present
+  when: extra_apt_packages | length > 0
+
+# ==================== DIRECTORIES ====================
 - name: Create Canonical workspace directory
   file:
     path: "{{ ansible_env.HOME }}/Canonical"
     state: directory
     mode: '0755'
+  when: is_can | bool
 
 # ==================== EXTERNAL REPOSITORIES ====================
-- name: Load external repository definitions
-  include_vars:
-    file: "{{ playbook_dir }}/vars/external_repos.yml"
-
 - name: Setup external APT repositories
   include_tasks: "{{ playbook_dir }}/tasks/external_repos.yml"
+  when: extra_external_repos | length > 0 or extra_external_debs | length > 0
 
 # ==================== SNAP PACKAGES ====================
 - name: Install snap packages
   include_tasks: "{{ playbook_dir }}/tasks/snap_packages.yml"
+  when: extra_snap_packages | length > 0
 
 # ==================== SYSTEMD USER SERVICES ====================
 - name: Enable and start ssh-agent service
