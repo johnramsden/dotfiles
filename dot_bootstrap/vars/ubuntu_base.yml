@@ -60,5 +60,5 @@ base_snap_packages:
   - {name: charmcraft, classic: true}
   - {name: testflinger-cli}
   - {name: spotify}
-  - {name: gh}
+  - {name: gh, classic: true}
   - {name: element-desktop}
