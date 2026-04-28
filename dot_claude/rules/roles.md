@@ -14,3 +14,9 @@
 - If a mount matching the current project is found, offer to run the build/tests inside that VM via `multipass exec`.
 - When using `multipass exec`, always pass `--working-directory` to set the correct path inside the VM, rather than relying on the shell profile to `cd` into the right directory.
 - If no matching VM is found, proceed locally (or ask the user for a VM name).
+
+## Documentation and Planning Documents
+
+- When asked to write an explanation document or a planning document, place it under `.claude/docs/` or `.claude/plan/` within the current project directory (not in the project's public docs tree).
+- When asked to write a review to disk, place it under `.claude/reviews/` within the current project directory.
+- Use Markdown format for these documents.
