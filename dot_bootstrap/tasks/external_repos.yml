@@ -1,6 +1,6 @@
 ---
 # Tasks for adding external APT repositories.
-# Requires: extra_external_repos and extra_external_debs from host vars.
+# Requires: all_external_repos and all_external_debs (merged in canonical.yml)
 
 - name: Ensure apt keyrings directory exists
   become: true
@@ -16,7 +16,7 @@
     chmod 644 "{{ item.keyring_path }}"
   args:
     creates: "{{ item.keyring_path }}"
-  loop: "{{ extra_external_repos }}"
+  loop: "{{ all_external_repos }}"
   loop_control:
     label: "{{ item.name }}"
 
@@ -26,7 +26,7 @@
     repo: "{{ item.repo_line }}"
     state: present
     filename: "{{ item.name }}"
-  loop: "{{ extra_external_repos }}"
+  loop: "{{ all_external_repos }}"
   loop_control:
     label: "{{ item.name }}"
 
@@ -40,7 +40,7 @@
   apt:
     name: "{{ item.1 }}"
     state: present
-  loop: "{{ extra_external_repos | subelements('packages') }}"
+  loop: "{{ all_external_repos | subelements('packages') }}"
   loop_control:
     label: "{{ item.1 }}"
 
@@ -48,6 +48,6 @@
   become: true
   apt:
     deb: "{{ item.deb_url }}"
-  loop: "{{ extra_external_debs }}"
+  loop: "{{ all_external_debs }}"
   loop_control:
     label: "{{ item.name }}"

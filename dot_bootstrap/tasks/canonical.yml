@@ -12,6 +12,12 @@
         - "{{ playbook_dir }}/vars/hosts/{{ ansible_hostname }}.yml"
         - "{{ playbook_dir }}/vars/hosts/default.yml"
 
+- name: Combine base and host package lists
+  set_fact:
+    all_external_repos: "{{ base_external_repos | default([]) + extra_external_repos | default([]) }}"
+    all_external_debs: "{{ base_external_debs | default([]) + extra_external_debs | default([]) }}"
+    all_snap_packages: "{{ base_snap_packages | default([]) + extra_snap_packages | default([]) }}"
+
 # ==================== BASE PACKAGES ====================
 - name: Install base packages (Ubuntu/Debian)
   become: true
@@ -26,7 +32,7 @@
   apt:
     name: "{{ extra_apt_packages }}"
     state: present
-  when: extra_apt_packages | length > 0
+  when: extra_apt_packages | default([]) | length > 0
 
 # ==================== DIRECTORIES ====================
 - name: Create Canonical workspace directory
@@ -39,12 +45,12 @@
 # ==================== EXTERNAL REPOSITORIES ====================
 - name: Setup external APT repositories
   include_tasks: "{{ playbook_dir }}/tasks/external_repos.yml"
-  when: extra_external_repos | length > 0 or extra_external_debs | length > 0
+  when: all_external_repos | length > 0 or all_external_debs | length > 0
 
 # ==================== SNAP PACKAGES ====================
 - name: Install snap packages
   include_tasks: "{{ playbook_dir }}/tasks/snap_packages.yml"
-  when: extra_snap_packages | length > 0
+  when: all_snap_packages | length > 0
 
 # ==================== SYSTEMD USER SERVICES ====================
 - name: Enable and start ssh-agent service

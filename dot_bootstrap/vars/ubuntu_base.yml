@@ -29,3 +29,36 @@ ubuntu_base_packages:
   - tmux
   - pinentry-curses
   - xclip
+
+base_external_repos:
+  - name: mattermost-desktop
+    gpg_key_url: https://deb.packages.mattermost.com/pubkey.gpg
+    keyring_path: /etc/apt/keyrings/mattermost-archive-keyring.gpg
+    repo_line: "deb [signed-by=/etc/apt/keyrings/mattermost-archive-keyring.gpg] https://deb.packages.mattermost.com stable main"
+    packages:
+      - mattermost-desktop
+
+base_external_debs:
+  - name: vscode
+    deb_url: "https://code.visualstudio.com/sha/download?build=stable&os=linux-deb-x64"
+  - name: google-chrome
+    deb_url: "https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"
+
+base_snap_packages:
+  - {name: pycharm-professional, classic: true}
+  - {name: goland, classic: true}
+  - {name: gitkraken, classic: true}
+  - {name: discord}
+  - {name: lxd}
+  - {name: juju}
+  - {name: snapcraft, classic: true}
+  - {name: multipass}
+  - {name: rockcraft, classic: true}
+  - {name: docker}
+  - {name: jhack, channel: "edge"}
+  - {name: microk8s, channel: "1.28-strict/stable"}
+  - {name: charmcraft, classic: true}
+  - {name: testflinger-cli}
+  - {name: spotify}
+  - {name: gh}
+  - {name: element-desktop}
