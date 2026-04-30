@@ -29,6 +29,7 @@ ubuntu_base_packages:
   - tmux
   - pinentry-curses
   - xclip
+  - onboard
 
 base_external_repos:
   - name: mattermost-desktop
@@ -56,7 +57,7 @@ base_snap_packages:
   - {name: rockcraft, classic: true}
   - {name: docker}
   - {name: jhack, channel: "edge"}
-  - {name: microk8s, channel: "1.28-strict/stable"}
+  # - {name: microk8s, channel: "1.28-strict/stable"}
   - {name: charmcraft, classic: true}
   - {name: testflinger-cli}
   - {name: spotify}
