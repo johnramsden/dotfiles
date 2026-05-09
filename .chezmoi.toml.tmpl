@@ -2,7 +2,7 @@
 {{- $isArch := eq .chezmoi.osRelease.id "arch" -}}
 {{- $isUbuntu := or (eq .chezmoi.osRelease.id "ubuntu") (eq .chezmoi.osRelease.id "debian") -}}
 {{- $hasSystemd := or (eq $hostname "fenix") (eq $hostname "wooly") (eq $hostname "enix") -}}
-{{- $isCan := or (eq $hostname "can") (eq $hostname "temp") -}}
+{{- $isCan := or (eq $hostname "can") (eq $hostname "temp") (eq $hostname "kiwi") -}}
 
 {{- /* Git config - different for can */ -}}
 {{- $gitEmail := "johnramsden@riseup.net" -}}
