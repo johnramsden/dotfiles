@@ -1,0 +1,13 @@
+---
+extra_apt_packages:
+  # KDE/Plasma
+  - kclock
+  - plasma-nm
+  - network-manager-openvpn
+  - guvcview
+  - okular
+  - yakuake
+  
+extra_snap_packages: []
+extra_external_repos: []
+extra_external_debs: []
