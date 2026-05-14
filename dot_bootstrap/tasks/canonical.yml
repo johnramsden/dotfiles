@@ -21,6 +21,8 @@
 # ==================== BASE PACKAGES ====================
 - name: Install base packages (Ubuntu/Debian)
   become: true
+  environment:
+    DEBIAN_FRONTEND: noninteractive
   apt:
     name: "{{ ubuntu_base_packages }}"
     state: present
@@ -29,6 +31,8 @@
 # ==================== HOST-SPECIFIC PACKAGES ====================
 - name: Install host-specific apt packages
   become: true
+  environment:
+    DEBIAN_FRONTEND: noninteractive
   apt:
     name: "{{ extra_apt_packages }}"
     state: present

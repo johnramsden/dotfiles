@@ -32,11 +32,15 @@
 
 - name: Update apt cache after adding repositories
   become: true
+  environment:
+    DEBIAN_FRONTEND: noninteractive
   apt:
     update_cache: true
 
 - name: Install packages from external repositories
   become: true
+  environment:
+    DEBIAN_FRONTEND: noninteractive
   apt:
     name: "{{ item.1 }}"
     state: present
@@ -46,6 +50,8 @@
 
 - name: Install packages from direct .deb URLs
   become: true
+  environment:
+    DEBIAN_FRONTEND: noninteractive
   apt:
     deb: "{{ item.deb_url }}"
   loop: "{{ all_external_debs }}"
