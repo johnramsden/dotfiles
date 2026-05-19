@@ -63,3 +63,4 @@ base_snap_packages:
   - {name: spotify}
   - {name: gh, classic: true}
   - {name: element-desktop}
+  - {name: obsidian, classic: true}
