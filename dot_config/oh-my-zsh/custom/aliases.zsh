@@ -65,3 +65,5 @@ function upall() {
 function delsshhost() {
     sed -i.bak -e "${1}d" "${HOME}/.ssh/known_hosts"
 }
+
+alias sclaude="CLAUDE_CONFIG_DIR=~/.claude-sk claude"
