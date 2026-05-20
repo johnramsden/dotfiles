@@ -11,7 +11,8 @@
       "Bash(gh run:*)",
       "Bash(gh api:*)",
       "Bash(gh repo:*)",
-      "Bash(gh release:*)"
+      "Bash(gh release:*)",
+      "Bash(git remote get-url origin)"
     ],
     "deny": [
       "Bash(gh pr create *)",
