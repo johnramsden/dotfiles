@@ -1,5 +1,8 @@
 {
   "permissions": {
+    "additionalDirectories": [
+      "~/Canonical/Ceph/Docs/Ceph/"
+    ],
     "allow": [
       "Bash(multipass info*)",
       "Bash(multipass exec *)",
