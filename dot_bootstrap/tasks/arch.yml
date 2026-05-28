@@ -19,6 +19,7 @@
       - htop
       - neofetch
       - fastfetch
+      - kdeconnect
     state: present
     update_cache: true
 

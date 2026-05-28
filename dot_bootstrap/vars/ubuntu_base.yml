@@ -30,6 +30,7 @@ ubuntu_base_packages:
   - pinentry-curses
   - xclip
   - onboard
+  - kdeconnect
 
 base_external_repos:
   - name: mattermost-desktop
