@@ -1,8 +1,5 @@
 {
   "permissions": {
-    "additionalDirectories": [
-      "~/Canonical/Ceph/Docs/Ceph/"
-    ],
     "allow": [
       "Bash(multipass info*)",
       "Bash(multipass exec *)",
@@ -27,8 +24,12 @@
       "Bash(gh issue edit *)",
       "Bash(gh release create *)",
       "Bash(gh release delete *)"
+    ],
+    "additionalDirectories": [
+      "~/Canonical/Ceph/Docs/Ceph/"
     ]
   },
+  "model": "opus",
   "hooks": {
     "Notification": [
       {
@@ -57,5 +58,6 @@
     "mode": "hold"
   },
   "theme": "dark",
+  "agentPushNotifEnabled": true,
   "voiceEnabled": false
 }
