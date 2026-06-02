@@ -65,3 +65,4 @@ base_snap_packages:
   - {name: gh, classic: true}
   - {name: element-desktop}
   - {name: obsidian, classic: true}
+  - {name: mermaid-cli}
