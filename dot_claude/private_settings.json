@@ -19,9 +19,7 @@
       "Bash(gh pr merge *)",
       "Bash(gh pr close *)",
       "Bash(gh pr edit *)",
-      "Bash(gh issue create *)",
       "Bash(gh issue close *)",
-      "Bash(gh issue edit *)",
       "Bash(gh release create *)",
       "Bash(gh release delete *)"
     ],
@@ -29,7 +27,7 @@
       "~/Canonical/Ceph/Docs/Ceph/"
     ]
   },
-  "model": "opus",
+  "model": "claude-fable-5[1m]",
   "hooks": {
     "Notification": [
       {
@@ -52,11 +50,28 @@
       }
     ]
   },
+  "statusLine": {
+    "type": "command",
+    "command": "/home/john/.local/bin/statusline.sh"
+  },
+  "enabledPlugins": {
+    "gitkraken-hooks@gitkraken": true
+  },
+  "extraKnownMarketplaces": {
+    "gitkraken": {
+      "source": {
+        "source": "directory",
+        "path": "/home/john/.claude/plugins/marketplaces/gitkraken"
+      }
+    }
+  },
   "effortLevel": "high",
+  "tui": "fullscreen",
   "voice": {
     "enabled": false,
     "mode": "hold"
   },
+  "skipWorkflowUsageWarning": true,
   "theme": "dark",
   "agentPushNotifEnabled": true,
   "voiceEnabled": false

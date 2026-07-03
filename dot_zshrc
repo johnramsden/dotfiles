@@ -69,7 +69,10 @@ export PATH
 
 export YSU_MODE=ALL
 
+# Claude
 
+#. "$HOME/.openrouter.secrets.env"
+#. "$HOME/.openrouter.env"
 
 # Copilot: include shared Claude rules directory
 if [ -n "$COPILOT_CUSTOM_INSTRUCTIONS_DIRS" ]; then
