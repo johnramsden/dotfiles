@@ -24,7 +24,7 @@
       "Bash(gh release delete *)"
     ],
     "additionalDirectories": [
-      "~/Canonical/Ceph/Docs/Ceph/"
+      "~/Canonical/Ceph/Docs/Ceph/",
       "~/Workspace/vault/"
     ]
   },
