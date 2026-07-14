@@ -25,6 +25,7 @@
     ],
     "additionalDirectories": [
       "~/Canonical/Ceph/Docs/Ceph/"
+      "~/Workspace/vault/"
     ]
   },
   "model": "opus[1m]",

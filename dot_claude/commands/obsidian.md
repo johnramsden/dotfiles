@@ -19,6 +19,8 @@ Follow these steps exactly:
 5. Construct the output path:
    ~/Canonical/Ceph/Docs/Ceph/repositories/<repo>/<subdir>/<YYYY-MM-DD>-<slug>.md
 
+   Fallback to ~/Workspace/vault/repositories/<repo>/<subdir>/<YYYY-MM-DD>-<slug>.md if ~/Canonical doesnt exist.
+
 6. Create the directory if it does not exist, then write the document there.
 
 The document must:
