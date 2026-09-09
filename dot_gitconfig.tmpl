@@ -53,3 +53,11 @@
 
 [safe]
     directory = /net/lilan.ramsden.network/mnt/tank/data/john/data/UBC/OxCache-WiredTiger-Trace
+
+{{ if .isCan }}
+[gitubuntu]
+    lpuser = johnramsden
+
+[url "git+ssh://johnramsden@git.launchpad.net/"]
+    insteadof = lp:
+{{ end }}
