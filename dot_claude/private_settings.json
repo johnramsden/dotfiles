@@ -1,4 +1,7 @@
 {
+  "env": {
+    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet"
+  },
   "permissions": {
     "allow": [
       "Bash(multipass info*)",
@@ -24,14 +27,10 @@
       "Bash(gh release delete *)"
     ],
     "additionalDirectories": [
-      "~/Canonical/Ceph/Docs/Ceph/",
-      "~/Workspace/vault/"
+      "~/Canonical/Ceph/Docs/Ceph/"
     ]
   },
-  "model": "opus[1m]",
-  "env": {
-    "CLAUDE_CODE_SUBAGENT_MODEL": "sonnet"
-  },
+  "model": "fable[1m]",
   "hooks": {
     "Notification": [
       {
@@ -70,6 +69,11 @@
     }
   },
   "effortLevel": "high",
+  "modelSettings": {
+    "claude-fable-5": {
+      "effortLevel": "xhigh"
+    }
+  },
   "tui": "fullscreen",
   "voice": {
     "enabled": false,
@@ -78,5 +82,38 @@
   "skipWorkflowUsageWarning": true,
   "theme": "dark",
   "agentPushNotifEnabled": true,
+  "autoMode": {
+    "soft_deny": [
+      "$defaults",
+      "Bash(git push:* --force) targeting upstream or sabaini remotes of this repo",
+      "multipass destructive subcommands (delete, purge) given heavy routine use (259×) of multipass in this project"
+    ],
+    "environment": [
+      "### Org-wide",
+      "**Organization**: Canonical (github.com/canonical org — this repo's upstream remote)",
+      "**Cloud provider(s)**: None configured",
+      "**Repository visibility**: PUBLIC — github.com/johnramsden/microceph (origin, this repo's fork); upstream github.com/canonical/microceph is also public",
+      "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
+      "**Secrets management**: None configured",
+      "**Default / protected branches**: main (default); no branch protection rules or rulesets listed via gh for johnramsden/microceph — treat as unprotected at the remote, rely on review process",
+      "**CI/CD deploy targets**: None configured",
+      "**Network posture**: None configured",
+      "**Source control**: This repo and its remotes only — origin (github.com/johnramsden/microceph, public), sabaini (github.com/sabaini/microceph, fork), upstream (github.com/canonical/microceph, public)",
+      "**Trusted internal domains**: None configured",
+      "**Trusted cloud buckets**: None configured",
+      "**Key internal services**: api.launchpad.net, git.launchpad.net, ppa.launchpadcontent.net, launchpad.net (Launchpad — Canonical's project/package hosting, contacted repeatedly in this project's sessions)",
+      "**Internal package registry**: None configured",
+      "**Sensitive data locations & audiences**: any file or store holding personal data, confidential business data, credentials, regulated data, or similarly sensitive material; preserve exact handles when known and share only with audiences cleared at the [named+specifics] bar. Note: microceph/cmd/microcephd/prod_wiring.go and .github/actions/govulncheck/allowlist.txt flagged by filename scan — review before treating as sensitive vs routine",
+      "**Data retention / declassification**: None configured",
+      "**Sensitive remote targets**: any namespace, host, or container whose name carries prod or production as a whole word or name segment (e.g. prod_wiring.go path, ceph-vanilla and rgw-lab k8s namespaces seen in usage are not prod-named and are not automatically sensitive)",
+      "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic",
+      "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries prod or production as a whole word or name segment",
+      "### User-specific",
+      "**Primary use of Claude Code**: software development (Ceph cluster orchestration tooling — MicroCeph)",
+      "**Trusted repo**: /home/john/Canonical/checkouts/ceph/microceph (github.com/johnramsden/microceph, public) and its remotes sabaini (github.com/sabaini/microceph) and upstream (github.com/canonical/microceph, public) — public visibility means only this repo's own work belongs there; secrets and sensitive data are never cleared into it by visibility alone",
+      "**Org-specific CLIs**: multipass (259× in this project's sessions), juju (9× in shell history)",
+      "routine under microceph/ prefix: Go source, snap packaging, and Ceph cluster bootstrap/test tooling in this repo"
+    ]
+  },
   "voiceEnabled": false
 }
