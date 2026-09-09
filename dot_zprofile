@@ -1,0 +1,5 @@
+export DEBFULLNAME="John Ramsden"
+export DEBEMAIL=john.ramsden@canonical.com
+
+export DEBSIGN_PROGRAM="/usr/bin/gpg2"
+export DEBSIGN_KEYID="2E989DFAD8B09FD0"

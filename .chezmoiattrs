@@ -1,3 +1,0 @@
-.config mode=0775
-.local mode=0775
-.local/bin mode=0775

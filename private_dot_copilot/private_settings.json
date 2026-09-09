@@ -1,0 +1,7 @@
+{
+  "allowedUrls": [
+    "https://documentation.ubuntu.com",
+    "https://raw.githubusercontent.com"
+  ],
+  "model": "auto"
+}

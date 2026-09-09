@@ -8,6 +8,7 @@
 .config/environment.d/50-snap.conf
 .config/plasma-workspace/env/snap.sh
 .Xresources
+.zprofile
 
 {{ end }}
 
