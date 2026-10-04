@@ -7,7 +7,7 @@ Follow these steps exactly:
    - If that is empty, fall back to the basename of the current working directory.
    - If $ARGUMENTS contains an explicit repo name (e.g. "for ceph-csi"), use that instead.
 
-2. Get today's date: run `date +%Y-%m-%d`.
+2. Get today's date: run `date +%Y-%m-%d`. Also get the month: run `date +%Y-%m`.
 
 3. Determine the document type from $ARGUMENTS or context, and map it to a subdirectory:
    - Exploration, explanation, deep-dive → `explanation/`
@@ -17,9 +17,9 @@ Follow these steps exactly:
 4. Derive a short, descriptive kebab-case slug from the topic in $ARGUMENTS (e.g. "rados-object-lifecycle").
 
 5. Construct the output path:
-   ~/Canonical/Ceph/Docs/Ceph/repositories/<repo>/<subdir>/<YYYY-MM-DD>-<slug>.md
+   ~/Canonical/Ceph/Docs/Ceph/repositories/<repo>/<subdir>/<YYYY-MM>/<YYYY-MM-DD>-<slug>.md
 
-   Fallback to ~/Workspace/vault/repositories/<repo>/<subdir>/<YYYY-MM-DD>-<slug>.md if ~/Canonical doesnt exist.
+   Fallback to ~/Workspace/vault/repositories/<repo>/<subdir>/<YYYY-MM>/<YYYY-MM-DD>-<slug>.md if ~/Canonical doesnt exist.
 
 6. Create the directory if it does not exist, then write the document there.
 

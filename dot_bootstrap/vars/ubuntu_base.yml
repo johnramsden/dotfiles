@@ -31,6 +31,7 @@ ubuntu_base_packages:
   - xclip
   - onboard
   - kdeconnect
+  - bats
 
 base_external_repos:
   - name: mattermost-desktop
