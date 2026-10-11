@@ -18,7 +18,6 @@ ubuntu_base_packages:
   - manpages
   - rsync
   - htop
-  - neofetch
   - gnupg
   - ca-certificates
   - syncthing
