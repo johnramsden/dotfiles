@@ -63,11 +63,54 @@
         - "{{ ansible_env.HOME }}/.ssh/keys"
 
     # ==================== SHELL ====================
-    - name: Change default shell to zsh
-      become: true
-      user:
-        name: "{{ ansible_env.USER }}"
-        shell: /usr/bin/zsh
+    - name: Configure default shell
+      tags: [shell]
+      vars:
+        shell_user: "{{ ansible_facts['user_id'] }}"
+      block:
+        - name: Look up local account
+          ansible.builtin.getent:
+            database: passwd
+            key: "{{ shell_user }}"
+            service: files
+            fail_key: false
+          register: local_shell_account
+
+        - name: Change local account shell to zsh
+          become: true
+          ansible.builtin.user:
+            name: "{{ shell_user }}"
+            shell: /usr/bin/zsh
+          when: local_shell_account.ansible_facts.getent_passwd[shell_user] is not none
+
+        - name: Configure authd account shell
+          when: local_shell_account.ansible_facts.getent_passwd[shell_user] is none
+          block:
+            - name: Look up authd account
+              ansible.builtin.getent:
+                database: passwd
+                key: "{{ shell_user }}"
+                service: authd
+                fail_key: false
+              register: authd_shell_account
+
+            - name: Require an account managed by authd
+              ansible.builtin.assert:
+                that:
+                  - authd_shell_account.ansible_facts.getent_passwd[shell_user] is not none
+                fail_msg: "{{ shell_user }} is not a local account and could not be resolved through authd. Check authd availability or configure the shell through this account's identity provider."
+
+            - name: Change authd account shell to zsh
+              become: true
+              ansible.builtin.command:
+                argv:
+                  - authctl
+                  - user
+                  - set-shell
+                  - "{{ shell_user }}"
+                  - /usr/bin/zsh
+              changed_when: true
+              when: authd_shell_account.ansible_facts.getent_passwd[shell_user][5] != '/usr/bin/zsh'
 
     # ==================== GIT REPOSITORIES ====================
     - name: Clone or update git repositories

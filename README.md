@@ -92,6 +92,8 @@ chezmoi apply
 
 Pipelining resolved the authd authentication-screen timeout on this host; `sudo -v` and selecting `sudo.ws` alone did not. Keep both environment variables set for bootstrap runs on this host.
 
+The bootstrap detects the current account's provider before setting its login shell: local accounts use Ansible's `user` module, while authd accounts use `authctl user set-shell` only when their shell is not already `/usr/bin/zsh`. If neither the local files provider nor authd resolves the account, the bootstrap fails rather than creating a duplicate local account. The authd path requires `authctl` to be installed; add `--tags shell` to the manual playbook command below to run only shell configuration.
+
 For a manual playbook run:
 
 ```bash
