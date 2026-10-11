@@ -79,3 +79,24 @@ Or run manually:
 cd ~/.local/share/chezmoi
 ansible-playbook dot_bootstrap/setup.yml --ask-become-pass
 ```
+
+### Ubuntu Resolute host with authd
+
+On the Ubuntu Resolute host using authd, run chezmoi with traditional sudo and Ansible pipelining enabled:
+
+```bash
+ANSIBLE_BECOME_EXE=/usr/bin/sudo.ws \
+ANSIBLE_PIPELINING=true \
+chezmoi apply
+```
+
+Pipelining resolved the authd authentication-screen timeout on this host; `sudo -v` and selecting `sudo.ws` alone did not. Keep both environment variables set for bootstrap runs on this host.
+
+For a manual playbook run:
+
+```bash
+cd ~/.local/share/chezmoi
+ANSIBLE_BECOME_EXE=/usr/bin/sudo.ws \
+ANSIBLE_PIPELINING=true \
+ansible-playbook dot_bootstrap/setup.yml --ask-become-pass
+```
