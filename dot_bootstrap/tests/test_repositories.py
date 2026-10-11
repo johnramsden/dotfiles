@@ -196,26 +196,36 @@ class RepositoryMigrationTests(unittest.TestCase):
     def test_first_migration_removes_only_declared_sources_before_apt(self):
         old = self.create_source('mattermost-desktop')
         old_jeyboard = self.create_source('jeyboard')
+        old_tailscale = self.create_source('tailscale')
         unrelated = self.create_source('unmanaged')
         keyring = self.root / 'etc/apt/keyrings/custom.gpg'
         keyring.parent.mkdir(parents=True)
         keyring.write_text('keep key')
-        result, events = self.execute(hostname='corpo', legacy=('mattermost-desktop', 'jeyboard'))
+        tailscale_keyring = self.root / 'usr/share/keyrings/tailscale-archive-keyring.gpg'
+        tailscale_keyring.parent.mkdir(parents=True)
+        tailscale_keyring.write_text('keep tailscale key')
+        result, events = self.execute(hostname='corpo', legacy=('mattermost-desktop', 'jeyboard', 'tailscale'))
         self.assert_success(result)
         self.assertFalse(old.exists())
         self.assertFalse(old_jeyboard.exists())
+        self.assertFalse(old_tailscale.exists())
         self.assertTrue(unrelated.exists())
         self.assertEqual(keyring.read_text(), 'keep key')
+        self.assertEqual(tailscale_keyring.read_text(), 'keep tailscale key')
         self.assertEqual(json.loads(self.source('mattermost-desktop', '.sources').read_text())['uris'],
                          'https://deb.packages.mattermost.com')
         self.assertEqual(json.loads(self.source('jeyboard', '.sources').read_text())['suites'],
                          'noble')
+        self.assertEqual(json.loads(self.source('tailscale', '.sources').read_text())['suites'],
+                         'noble')
         self.assertLess(events.index(['repo', 'mattermost-desktop']), events.index(['refresh']))
         self.assertLess(events.index(['repo', 'jeyboard']), events.index(['refresh']))
+        self.assertLess(events.index(['repo', 'tailscale']), events.index(['refresh']))
         self.assertLess(events.index(['refresh']),
                         next(i for i, event in enumerate(events) if event[0] == 'packages'))
         self.assertIn(['packages', 'mattermost-desktop'], events)
         self.assertIn(['packages', 'gnome-shell-extension-jeyboard'], events)
+        self.assertIn(['packages', 'tailscale'], events)
 
     def test_second_run_does_not_refresh_unchanged_repositories(self):
         self.assert_success(self.execute()[0])
@@ -236,14 +246,16 @@ class RepositoryMigrationTests(unittest.TestCase):
     def test_later_key_failure_preserves_every_legacy_source(self):
         mattermost = self.create_source('mattermost-desktop')
         jeyboard = self.create_source('jeyboard')
-        result, events = self.execute(hostname='corpo', legacy=('mattermost-desktop', 'jeyboard'),
+        tailscale = self.create_source('tailscale')
+        result, events = self.execute(hostname='corpo', legacy=('mattermost-desktop', 'jeyboard', 'tailscale'),
                                       fail_repo='jeyboard')
         self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
         self.assertIn('repository key retrieval failed for jeyboard', result.stdout + result.stderr)
         self.assertEqual(mattermost.read_text(), 'legacy source')
         self.assertEqual(jeyboard.read_text(), 'legacy source')
+        self.assertEqual(tailscale.read_text(), 'legacy source')
         self.assertTrue(self.source('mattermost-desktop', '.sources').exists())
-        self.assertEqual([event[0] for event in events], ['probe', 'repo', 'repo'])
+        self.assertEqual([event[0] for event in events], ['probe', 'repo', 'repo', 'repo'])
 
     def test_restarted_migration_repairs_coexisting_sources_before_apt(self):
         old = self.create_source('mattermost-desktop')
@@ -256,19 +268,29 @@ class RepositoryMigrationTests(unittest.TestCase):
         self.assertIn(['refresh'], events)
         self.assertIn(['packages', 'mattermost-desktop'], events)
 
-    def test_corpo_only_uses_jeyboard_repository_and_binary_package(self):
+    def test_corpo_only_uses_jeyboard_and_tailscale_repositories_and_packages(self):
         for host in ('corp', 'can', 'kiwi', 'unknown', 'corpo'):
             with self.subTest(host=host):
-                result, events = self.execute(hostname=host)
+                result, events = self.execute(hostname=host, extra_vars={
+                    'ansible_facts': {'hostname': host, 'distribution_release': 'jammy',
+                                      'python': {'executable': '/usr/bin/python3'}}
+                } if host == 'corpo' else None)
                 self.assert_success(result)
                 self.assertEqual(['repo', 'jeyboard'] in events, host == 'corpo')
                 self.assertEqual(['packages', 'gnome-shell-extension-jeyboard'] in events,
                                  host == 'corpo')
+                self.assertEqual(['repo', 'tailscale'] in events, host == 'corpo')
+                self.assertEqual(['packages', 'tailscale'] in events, host == 'corpo')
                 self.assertIn(['repo', 'mattermost-desktop'], events)
                 self.assertEqual(self.source('jeyboard', '.sources').exists(), host == 'corpo')
+                self.assertEqual(self.source('tailscale', '.sources').exists(), host == 'corpo')
                 if host == 'corpo':
                     self.assertEqual(json.loads(self.source('jeyboard', '.sources').read_text())['suites'],
-                                     'noble')
+                                     'jammy')
+                    tailscale = json.loads(self.source('tailscale', '.sources').read_text())
+                    self.assertEqual(tailscale['suites'], 'jammy')
+                    self.assertEqual(tailscale['signed_by'],
+                                     'https://pkgs.tailscale.com/stable/ubuntu/jammy.noarmor.gpg')
 
     def test_direct_debs_are_installed_even_without_repositories(self):
         result, events = self.execute(extra_vars={

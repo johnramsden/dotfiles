@@ -105,23 +105,4 @@ ansible-playbook dot_bootstrap/setup.yml --ask-become-pass
 
 ### External APT repositories
 
-Shared repositories belong in `base_external_repos` in `dot_bootstrap/vars/ubuntu_base.yml`; host-specific repositories belong in `extra_external_repos` in `dot_bootstrap/vars/hosts/HOSTNAME.yml`. Host selection uses the exact hostname: Jeyboard is configured only in `corpo.yml`, not `corp.yml` or the shared defaults, and installs `gnome-shell-extension-jeyboard`. Its PPA currently publishes packages for Ubuntu Resolute.
-
-Each repository uses `name`, `uris`, `suites`, `components`, `signed_by`, and `packages`. The `signed_by` field accepts a signing-key URL or a local keyring path. Repository packages stay in the repository's `packages` list so they are installed after its sources are configured. For example, the shared Mattermost entry is:
-
-```yaml
-base_external_repos:
-  - name: mattermost-desktop
-    uris: https://deb.packages.mattermost.com
-    suites: stable
-    components: [main]
-    signed_by: https://deb.packages.mattermost.com/pubkey.gpg
-    legacy_source_files:
-      - /etc/apt/sources.list.d/mattermost-desktop.list
-    packages:
-      - mattermost-desktop
-```
-
-Repository management requires ansible-core 2.15 or newer and the Python `debian` library. The bootstrap checks the Ansible version before loading the deb822 tasks and installs `python3-debian` and `ca-certificates` if the system Python lacks the library; a custom Python interpreter must already provide it.
-
-The bootstrap writes deb822 `.sources` files with repository-specific signing keys, then removes only the exact paths declared in the optional `legacy_source_files` list, and refreshes APT if repository configuration or legacy cleanup changed. This configuration phase runs before normal package operations so an interrupted migration can repair duplicate old/new source definitions before APT reads them. Unlisted source files and old keyrings are left untouched; inspect manually added sources before listing them for removal. Direct `.deb` downloads and Snap configuration are unchanged.
+Shared repositories belong in `base_external_repos` in `dot_bootstrap/vars/ubuntu_base.yml`; host-specific repositories belong in `extra_external_repos` in `dot_bootstrap/vars/hosts/HOSTNAME.yml`.
