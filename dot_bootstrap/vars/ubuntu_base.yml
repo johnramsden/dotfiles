@@ -29,8 +29,6 @@ ubuntu_base_packages:
   - tmux
   - pinentry-curses
   - xclip
-  - onboard
-  - kdeconnect
   - bats
 
 base_external_repos:
