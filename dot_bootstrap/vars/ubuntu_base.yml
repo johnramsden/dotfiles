@@ -24,6 +24,7 @@ ubuntu_base_packages:
   - autofs
   - python3-pip
   - python3-venv
+  - python3-debian
   - unzip
   - tmux
   - pinentry-curses
@@ -32,9 +33,12 @@ ubuntu_base_packages:
 
 base_external_repos:
   - name: mattermost-desktop
-    gpg_key_url: https://deb.packages.mattermost.com/pubkey.gpg
-    keyring_path: /etc/apt/keyrings/mattermost-archive-keyring.gpg
-    repo_line: "deb [signed-by=/etc/apt/keyrings/mattermost-archive-keyring.gpg] https://deb.packages.mattermost.com stable main"
+    uris: https://deb.packages.mattermost.com
+    suites: stable
+    components: [main]
+    signed_by: https://deb.packages.mattermost.com/pubkey.gpg
+    legacy_source_files:
+      - /etc/apt/sources.list.d/mattermost-desktop.list
     packages:
       - mattermost-desktop
 

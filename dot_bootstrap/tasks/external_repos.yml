@@ -1,41 +1,6 @@
 ---
-# Tasks for adding external APT repositories.
+# Install packages from already-configured repositories and direct .deb URLs.
 # Requires: all_external_repos and all_external_debs (merged in canonical.yml)
-
-- name: Ensure apt keyrings directory exists
-  become: true
-  file:
-    path: /etc/apt/keyrings
-    state: directory
-    mode: '0755'
-
-- name: Download and install GPG keys for external repositories
-  become: true
-  shell: |
-    curl -fsSL "{{ item.gpg_key_url }}" | gpg --dearmor -o "{{ item.keyring_path }}"
-    chmod 644 "{{ item.keyring_path }}"
-  args:
-    creates: "{{ item.keyring_path }}"
-  loop: "{{ all_external_repos }}"
-  loop_control:
-    label: "{{ item.name }}"
-
-- name: Add external APT repositories
-  become: true
-  apt_repository:
-    repo: "{{ item.repo_line }}"
-    state: present
-    filename: "{{ item.name }}"
-  loop: "{{ all_external_repos }}"
-  loop_control:
-    label: "{{ item.name }}"
-
-- name: Update apt cache after adding repositories
-  become: true
-  environment:
-    DEBIAN_FRONTEND: noninteractive
-  apt:
-    update_cache: true
 
 - name: Install packages from external repositories
   become: true

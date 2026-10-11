@@ -1,0 +1,64 @@
+---
+# Configure managed repositories before any general APT operation can parse legacy sources.
+- name: Check Python deb822 support on the managed host
+  become: true
+  ansible.builtin.command:
+    argv:
+      - "{{ ansible_facts['python']['executable'] }}"
+      - -c
+      - import debian.deb822
+  register: external_repo_python_debian
+  changed_when: false
+  failed_when: false
+  check_mode: false
+
+- name: Require system Python to install missing deb822 support
+  ansible.builtin.assert:
+    that:
+      - 'ansible_facts["python"]["executable"] is match("^/usr/bin/python3(\\.[0-9]+)?$")'
+    fail_msg: "Install the Python debian library into {{ ansible_facts['python']['executable'] }} before configuring managed APT repositories; apt-installed python3-debian supports only the system Python."
+  when: external_repo_python_debian.rc != 0
+
+- name: Install prerequisites for managed APT repositories
+  become: true
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  ansible.builtin.apt:
+    name:
+      - python3-debian
+      - ca-certificates
+    state: present
+  when: external_repo_python_debian.rc != 0
+
+- name: Add external APT repositories
+  become: true
+  ansible.builtin.deb822_repository:
+    name: "{{ item.name }}"
+    types: [deb]
+    uris: "{{ item.uris }}"
+    suites: "{{ item.suites }}"
+    components: "{{ item.components }}"
+    signed_by: "{{ item.signed_by }}"
+    state: present
+  loop: "{{ all_external_repos }}"
+  loop_control:
+    label: "{{ item.name }}"
+  register: external_repo_definitions
+
+- name: Remove known legacy APT source files after installing replacements
+  become: true
+  ansible.builtin.file:
+    path: "{{ item.1 }}"
+    state: absent
+  loop: "{{ all_external_repos | subelements('legacy_source_files', skip_missing=True) }}"
+  loop_control:
+    label: "{{ item.0.name }}: {{ item.1 }}"
+  register: external_repo_legacy_cleanup
+
+- name: Update apt cache after repository changes
+  become: true
+  environment:
+    DEBIAN_FRONTEND: noninteractive
+  ansible.builtin.apt:
+    update_cache: true
+  when: external_repo_definitions is changed or external_repo_legacy_cleanup is changed

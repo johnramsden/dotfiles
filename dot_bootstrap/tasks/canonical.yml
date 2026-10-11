@@ -9,7 +9,7 @@
   include_vars: "{{ item }}"
   with_first_found:
     - files:
-        - "{{ playbook_dir }}/vars/hosts/{{ ansible_hostname }}.yml"
+        - "{{ playbook_dir }}/vars/hosts/{{ ansible_facts['hostname'] }}.yml"
         - "{{ playbook_dir }}/vars/hosts/default.yml"
 
 - name: Combine base and host package lists
@@ -17,6 +17,17 @@
     all_external_repos: "{{ base_external_repos | default([]) + extra_external_repos | default([]) }}"
     all_external_debs: "{{ base_external_debs | default([]) + extra_external_debs | default([]) }}"
     all_snap_packages: "{{ base_snap_packages | default([]) + extra_snap_packages | default([]) }}"
+
+- name: Require ansible-core 2.15 or newer for managed APT repositories
+  ansible.builtin.assert:
+    that:
+      - ansible_version.full is version('2.15', '>=')
+    fail_msg: "Managed APT repositories require ansible-core 2.15 or newer (ansible.builtin.deb822_repository)."
+  when: all_external_repos | length > 0
+
+- name: Configure managed APT repositories before package operations
+  include_tasks: "{{ playbook_dir }}/tasks/configure_external_repos.yml"
+  when: all_external_repos | length > 0
 
 # ==================== BASE PACKAGES ====================
 - name: Install base packages (Ubuntu/Debian)
@@ -27,6 +38,7 @@
     name: "{{ ubuntu_base_packages }}"
     state: present
     update_cache: true
+    cache_valid_time: 3600
 
 # ==================== HOST-SPECIFIC PACKAGES ====================
 - name: Install host-specific apt packages

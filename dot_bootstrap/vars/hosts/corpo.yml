@@ -1,0 +1,14 @@
+---
+extra_apt_packages: []
+extra_snap_packages: []
+extra_external_repos:
+  - name: jeyboard
+    uris: https://ppa.launchpadcontent.net/johnramsden/jeyboard/ubuntu
+    suites: "{{ ansible_facts['distribution_release'] }}"
+    components: [main]
+    signed_by: "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x8B1BAA25CA7C526633B1188B7FD18D151FE55C58"
+    legacy_source_files:
+      - /etc/apt/sources.list.d/jeyboard.list
+    packages:
+      - gnome-shell-extension-jeyboard
+extra_external_debs: []
